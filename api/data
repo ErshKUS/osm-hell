@@ -1,0 +1,48 @@
+#!/usr/local/bin/python
+# -*- coding: utf8 -*-
+
+#osm-hell
+
+import cgi, sys, json
+import psycopg2
+import psycopg2.extras
+import db_config
+
+output={}
+
+def getdata():
+  cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+  cur.execute("""
+    SELECT id,city,street,house,flat,contact,phone,required,info,condition_house
+    FROM
+      hell_data
+  ;""")
+  data = {}
+  data['rows']=[]
+  for record in cur:
+    data['rows'].append(record)
+  #data['rows']=rows
+  print json.dumps(data)
+
+
+
+
+#send = "Content-type: text/javascript;" # debug  
+send = "Content-type: application/json;" # production
+send = send + " Charset=Utf-8\nAccess-Control-Allow-Origin: *\nAccess-Control-Request-Headers: X-Requested-With, X-Prototype-Version\nAccess-Control-Request-Method: GET\n"
+print send # production
+
+conn = psycopg2.connect(host=db_config.site_host, database=db_config.site_database, user=db_config.site_user, password=db_config.site_password)
+
+getvalues=cgi.FieldStorage()
+output['action'] = getvalues.getfirst('action','')
+if output['action'] == 'getdata':
+  getdata()
+#elif output['action'] == 'centroid':
+#  centroid()
+else:
+  output['error']='wrong action'
+
+if (output['action'] <> 'getdata'):
+  #if (output['type'] == 'callback'):
+  print json.dumps(output)
