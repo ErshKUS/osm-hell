@@ -4,6 +4,9 @@ function init(){
   
   var krymsk = new L.LatLng(44.915, 38.0);
   map.setView(krymsk, 13).addLayer(mapnik);
+  
+  window.osmhell = new OSMHell($('#city_select')[0], $('#street_select')[0], $('#building_select')[0]);
+  window.osmhell.loadCityes();
 }
 
 $(init); // on dom ready
