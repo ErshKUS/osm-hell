@@ -14,12 +14,18 @@
   <script type="text/javascript" src="js/jquery.cookie.js"></script>
   <script type="text/javascript" src="js/jquery-ui-1.8.21.custom.min.js"></script>
   <script type="text/javascript" src="js/i18n/grid.locale-ru.js"></script>
-  <script type="text/javascript" src="js/jquery.jqGrid.src.js"></script>
+  <script type="text/javascript" src="js/jquery.jqGrid.min.js"></script>
       
   <script type="text/javascript" src="js/main.js"></script>
     
 </head>
 <body>
+
+<div style="width:100%;height:35%">
+  
+</div>
+<div id="map">
+</div>
 
 </body>
 </html>
