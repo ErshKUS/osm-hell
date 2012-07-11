@@ -22,8 +22,8 @@
 </head>
 <body onload="init();">
   <div style="width:100%;height:35%">
-    <table id="tab">
-    </table>
+    <table id="tab"></table>
+    <div id="tabp"></div>
   
   
     <form action="/">

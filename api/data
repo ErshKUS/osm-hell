@@ -8,22 +8,38 @@ import psycopg2
 import psycopg2.extras
 import db_config
 
+rows=['city','street','house','flat','contact','phone','required','info','condition_house']
 output={}
 
 def getdata():
+  getval={}
+  getval['_search'] = getvalues.getfirst('_search','')
+  
+  where = ' true '
+  for name in rows:
+    getval[name] = getvalues.getfirst(name,'')
+    if (getval[name]<>'' and getval['_search']<>''):
+      getval[name]=getval[name]+'%'
+      where = where + ' AND '+name+' LIKE %('+name+')s'
+      
+
   cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
   cur.execute("""
-    SELECT id,city,street,house,flat,contact,phone,required,info,condition_house
+    SELECT *
     FROM
       hell_data
-  ;""")
+    WHERE
+      """+where+"""
+  ;""",getval)
   data = {}
   data['rows']=[]
   for record in cur:
     data['rows'].append(record)
-  #data['rows']=rows
   print json.dumps(data)
 
+def setdata():
+  getval={}
+  getval['oper'] = getvalues.getfirst('oper','')
 
 
 
@@ -38,8 +54,8 @@ getvalues=cgi.FieldStorage()
 output['action'] = getvalues.getfirst('action','')
 if output['action'] == 'getdata':
   getdata()
-#elif output['action'] == 'centroid':
-#  centroid()
+elif output['action'] == 'setdata':
+  setdata()
 else:
   output['error']='wrong action'
 
