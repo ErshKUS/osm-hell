@@ -15,6 +15,15 @@ OSMHell = function OSMHell(city, street, building){
 
 OSMHell.API_URL = 'http://ersh.homelinux.com:8090/api/searchselect';
 
+OSMHell.prototype.loadCityes = function(json){
+	$.ajax(OSMHell.API_URL, {
+		data: {'action':'addrselect', 'get' : 'city'},
+		context : window.osmhell
+	}).done(function ( data ) {
+		this.applyCityes($.parseJSON(data));
+	});
+};
+
 OSMHell.prototype.applyCityes = function(json){
 	if(json && json.rows){
 		for(var i in json.rows){
