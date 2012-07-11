@@ -24,7 +24,7 @@
 <div style="width:100%;height:35%">
   
 </div>
-<div id="map">
+<div id="map" style="height:65%">
 </div>
 
 </body>
