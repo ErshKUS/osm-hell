@@ -25,9 +25,9 @@ OSMHell.prototype.loadCityes = function(json){
 };
 
 OSMHell.prototype.applyCityes = function(json){
-	if(json && json.rows){
-		for(var i in json.rows){
-			this.addCity(json.rows[i].name);
+	if(json && json.data){
+		for(var i in json.data){
+			this.addCity(json.data[i].name);
 		}
 		
 		this.refreshCitiesView();
