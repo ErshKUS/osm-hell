@@ -8,13 +8,13 @@ $(function(){
   var mapnik = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: "Map data &copy; <a href='http://osm.org'>OpenStreetMap</a> contributors"});
   
   var krymsk = new L.LatLng(44.915, 38.0);
-  map.setView(krymsk, 13).addLayer(mapnik);
-  map.markergroup = new L.LayerGroup();
-  map.addLayer(map.markergroup);
-  map.allmarkers = {};
+  hell.map.setView(krymsk, 13).addLayer(mapnik);
+  hell.map.markergroup = new L.LayerGroup();
+  hell.map.addLayer(hell.map.markergroup);
+  hell.map.allmarkers = {};
 
   // цветные маркеры
-  map.mcolors = new Array(new MarkerIcon({markerColor:'red'}), new MarkerIcon({markerColor:'yellow'}), new MarkerIcon({markerColor:'green'}));
+  hell.map.mcolors = new Array(new MarkerIcon({markerColor:'red'}), new MarkerIcon({markerColor:'yellow'}), new MarkerIcon({markerColor:'green'}));
 
   updateMarkers(); //load markers from server
 
@@ -32,7 +32,7 @@ $(function(){
 onresize = function() {
   $('#tab').jqGrid('setGridHeight', $(window).height()/2-30);
   $('#map').height($(window).height()-$('#table').height()-3);
-  map.invalidateSize();
+  hell.map.invalidateSize();
   $('#tab').jqGrid('setGridWidth', $(window).width());
 };
 
