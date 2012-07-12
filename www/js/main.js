@@ -69,6 +69,10 @@ hell.inittab = function(){
           )
         })
       },*/
+      beforeSelectRow: function(rowid) {
+        alert($('#tab').jqGrid('getRowData',rowid).id);
+        return true;
+      }
     /*  beforeSelectRow: function(rowid) {
         $("#moreval_grid").jqGrid(
           'setGridParam',{
@@ -125,7 +129,7 @@ hell.inittab = function(){
         return [success,message,new_id];
       },
       afterShowForm : function (formid) {
-        e=1;
+        $('#tr_city', formid).after($('<tr><td class="CaptionTD">test:</td><td class="DataTD">&nbsp;<input class="FormElement ui-widget-content ui-corner-all"></td></tr>'));
       } 
     }
   );
