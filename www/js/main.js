@@ -128,6 +128,9 @@ hell.inittab = function(){
         }
         $(this).jqGrid('setGridParam', {datatype:'json'});
         return [success,message];
+      },
+      afterShowForm : function (formid) {
+    	  window.osmhell.connectToForm(formid);        
       }
     },
     { //add

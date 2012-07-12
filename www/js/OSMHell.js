@@ -68,7 +68,7 @@ OSMHell.prototype.cityChange = function(){
 	}
 };
 
-OSMHell.prototype.refreshStreetsData = function(){
+OSMHell.prototype.refreshStreetsData = function(doneCallback, context){
 	
 	if(!this.cities[this.selectedCity].loaded){
 		var cityClosure = this.selectedCity;
@@ -78,9 +78,17 @@ OSMHell.prototype.refreshStreetsData = function(){
 		}).done(function ( data ) {
 			this.applyStreets($.parseJSON(data), cityClosure);
 			this.refreshStreetsView();
+			
+			if(doneCallback){
+				doneCallback.apply(context, []);
+			}
 		});
 	} else {
 		this.refreshStreetsView();
+		
+		if(doneCallback){
+			doneCallback.apply(context, []);
+		}
 	}
 	
 	
@@ -136,7 +144,7 @@ OSMHell.prototype.streetChange = function(){
 	}
 };
 
-OSMHell.prototype.refreshBuildingsData = function(){
+OSMHell.prototype.refreshBuildingsData = function(doneCallback, contex){
 	
 	if(!this.cities[this.selectedCity].streets[this.selectedStreet].loaded){
 		var cityClosure = this.selectedCity;
@@ -147,9 +155,17 @@ OSMHell.prototype.refreshBuildingsData = function(){
 		}).done(function ( data ) {
 			this.applyBuildings($.parseJSON(data), cityClosure, streetClosure);
 			this.refreshBuildingsView();
+			
+			if(doneCallback){
+				doneCallback.apply(contex, []);
+			}
 		});
 	} else {
 		this.refreshBuildingsView();
+		
+		if(doneCallback){
+			doneCallback.apply(contex, []);
+		}
 	}
 	
 };
@@ -190,16 +206,20 @@ OSMHell.prototype.refreshBuildingsView = function(){
 OSMHell.prototype.buildingChange = function(){
 	this.selectedBuilding = this.buildingView.options[this.buildingView.selectedIndex].text;
 	
+	this.centerSelectedBuilding();
+	
+	if(this.buildingView.selectedIndex > 0){
+		this.setData(this.buildingInput, this.selectedBuilding);
+	}
+};
+
+OSMHell.prototype.centerSelectedBuilding = function(){
 	var bk = this.getSelectedBuildingKey();
 	if(this.coordsCache[bk]){
 		this.centerMap(this.coordsCache[bk]);
 	}
 	else{
 		this.loadBuildingCenter();
-	}
-	
-	if(this.buildingView.selectedIndex > 0){
-		this.setData(this.buildingInput, this.selectedBuilding);
 	}
 };
 
@@ -234,6 +254,8 @@ OSMHell.prototype.connectToForm = function(formId){
 	else {
 		this.bindEvents(formId);
 	}
+	
+	this.fromInputsToSelect();
 	
 };
 
@@ -295,6 +317,45 @@ OSMHell.prototype.resetStreetView = function(){
 OSMHell.prototype.resetBuildingView = function(){
 	if(this.buildingView){
 		this.buildingView.selectedIndex = 0;
+	}
+};
+
+OSMHell.prototype.fromInputsToSelect = function(){
+	if(this.cityInput && this.cityInput.value != null && this.cities[this.cityInput.value] != null){
+		this.selectedCity = this.cities[this.cityInput.value].name;
+		this.refreshStreetsData(function(){
+			
+			this.select(this.selectedCity, this.cityView);
+			
+			if(this.streetInput && this.streetInput.value != null && this.cities[this.selectedCity].streets[this.streetInput.value] != null){
+				this.selectedStreet = this.cities[this.selectedCity].streets[this.streetInput.value].name;
+				this.refreshBuildingsData(function(){
+					this.select(this.selectedStreet, this.streetView);
+					
+					if(this.buildingInput && this.buildingInput.value && $.inArray(this.buildingInput.value, this.cities[this.selectedCity].streets[this.streetInput.value].buildings) >= 0){
+						this.selectedBuilding = this.buildingInput.value;
+						this.select(this.selectedBuilding, this.buildingView);
+						this.centerSelectedBuilding();
+					}
+				}, this);
+			}
+			else{
+				this.resetBuildingView();
+			}
+		}, this);
+	}
+	else{
+		this.resetStreetView();	
+	}
+};
+
+OSMHell.prototype.select = function(value, sinp){
+	var options = $('option', sinp);
+	for(var i = 0; i < options.length; i++ ){
+		if(options[i].text == value){
+			sinp.selectedIndex = i;
+			break;
+		}
 	}
 };
 
