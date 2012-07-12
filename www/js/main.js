@@ -1,12 +1,24 @@
 var hell={};
 
 $(function(){
+  L.Icon.Default.imagePath='img';
+
   map = new L.Map('map');
   var mapnik = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: "Map data &copy; <a href='http://osm.org'>OpenStreetMap</a> contributors"});
   
   var krymsk = new L.LatLng(44.915, 38.0);
   map.setView(krymsk, 13).addLayer(mapnik);
-  
+  map.markergroup = new L.LayerGroup();
+  map.addLayer(map.markergroup);
+
+  // цветные маркеры
+  map.mcolors = new Array(new MarkerIcon({markerColor:'red'}), new MarkerIcon({markerColor:'yellow'}), new MarkerIcon({markerColor:'green'}));
+
+  onmapmove(); //load markers from server
+
+  if (location.href.search("map.php")>0)
+    return;
+
   window.osmhell = new OSMHell($('#city_select')[0], $('#street_select')[0], $('#building_select')[0]);
   window.osmhell.loadCityes();
   
@@ -114,3 +126,46 @@ hell.inittab = function(){
   
   
 }
+
+onmapmove = function() {
+  //var bnds = map.getBounds();
+  bnds = new L.LatLngBounds(new L.LatLng(44.57,36.72), new L.LatLng(45.30, 39.04));
+  $.ajax({
+    url: "http://ersh.homelinux.com:8092/api/data",
+    type: "GET",
+    data: {
+      action: "getpoint",
+      maxlat: bnds.getNorthEast().lat,
+      maxlon: bnds.getNorthEast().lng,
+      minlat: bnds.getSouthWest().lat,
+      minlon: bnds.getSouthWest().lng
+    },
+    dataType: "json",
+    success: function(json, text, jqXHR) {
+      if (json.hasOwnProperty("error")) {
+        alert("Произошла ошибка!\n"+json.error);
+      } else {
+        map.markergroup.clearLayers();
+        for(var i=0;i<json.data.length;i++) {
+          // каждую точку сложить в одно сообщение
+          var point = json.data[i];
+          var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
+          marker.bindPopup(point.info);
+          marker.setIcon(map.mcolors[0]);
+          map.markergroup.addLayer(marker);
+        }
+      }
+    }
+  }).fail(function (jqXHR, textStatus) {
+    alert("Произошла ошибка при чтении карты");
+  });
+  setTimeout(onmapmove, 300000);// reload every 5 minutes
+}
+
+MarkerIcon = L.Icon.Default.extend({
+  createIcon: function() {
+    var img = this._createIcon(this.options.markerColor);
+    this._setIconStyles(img, 'icon');
+    return img;
+  }
+});
