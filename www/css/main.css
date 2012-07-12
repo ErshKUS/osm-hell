@@ -27,3 +27,7 @@ table {
 .ui-jqgrid .ui-jqgrid-pager {
     font-size: 14px !important;
 }
+
+.help-select {
+	width: 150px;
+}

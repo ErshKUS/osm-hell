@@ -90,9 +90,10 @@ hell.inittab = function(){
     {edit:true,add:true,del:false,search:false,refresh:true},
     { //edit
       closeAfterEdit: true,
+      width :  400,
       afterSubmit: function (response, postdata) {
         var success = true;
-        var message = ""
+        var message = "";
         var json = jQuery.parseJSON(response.responseText);
         if(json.errors) {
           success = false;
@@ -110,9 +111,10 @@ hell.inittab = function(){
     },
     { //add
       closeAfterAdd : true,
+      width :  400,
       afterSubmit: function (response, postdata) {
         var success = true;
-        var message = ""
+        var message = "";
         var json = jQuery.parseJSON(response.responseText);
         if(json.errors) {
           success = false;
@@ -129,7 +131,7 @@ hell.inittab = function(){
         return [success,message,new_id];
       },
       afterShowForm : function (formid) {
-        $('#tr_city', formid).after($('<tr><td class="CaptionTD">test:</td><td class="DataTD">&nbsp;<input class="FormElement ui-widget-content ui-corner-all"></td></tr>'));
+    	  window.osmhell.connectToForm(formid);        
       } 
     }
   );
@@ -181,7 +183,7 @@ updateMarkers = function() {
     alert("Произошла ошибка при чтении карты");
   });
   setTimeout(updateMarkers, 300000);// reload every 5 minutes
-}
+};
 
 MarkerIcon = L.Icon.Default.extend({
   createIcon: function() {

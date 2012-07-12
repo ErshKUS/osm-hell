@@ -1,14 +1,9 @@
-OSMHell = function OSMHell(city, street, building){
-	this.cityView = city;
-	this.streetView = street;
-	this.buildingView = building;
+OSMHell = function OSMHell(){
+	this.cityView = null;
+	this.streetView = null;
+	this.buildingView = null;
 	
 	this.cities = {};
-	
-	var thisClosure = this;
-	$(this.cityView).bind('change', function(evnt){thisClosure.cityChange.apply(thisClosure, [evnt])});
-	$(this.streetView).bind('change', function(evnt){thisClosure.streetChange.apply(thisClosure, [evnt])});
-	$(this.buildingView).bind('change', function(evnt){thisClosure.buildingChange.apply(thisClosure, [evnt])});
 	
 	this.coordsCache = {};
 };
@@ -63,6 +58,14 @@ OSMHell.prototype.cityChange = function(){
 	if(this.cityView.selectedIndex != 0){
 		this.refreshStreetsData();
 	}
+	
+	if(this.cityView.selectedIndex > 0){
+		this.setData(this.cityInput, this.selectedCity);
+	}
+	
+	if(this.cityView.selectedIndex == 0){
+		this.resetStreetView();
+	}
 };
 
 OSMHell.prototype.refreshStreetsData = function(){
@@ -85,8 +88,8 @@ OSMHell.prototype.refreshStreetsData = function(){
 
 OSMHell.prototype.applyStreets = function(json, city){
 	
-	for(var i in json.rows){
-		this.addStreet(json.rows[i].name, city);
+	for(var i in json.data){
+		this.addStreet(json.data[i].name, city);
 	}
 	
 	this.cities[city].loaded = true;
@@ -128,6 +131,9 @@ OSMHell.prototype.streetChange = function(){
 		this.refreshBuildingsData();
 	}
 	
+	if(this.streetView.selectedIndex > 0){
+		this.setData(this.streetInput, this.selectedStreet);
+	}
 };
 
 OSMHell.prototype.refreshBuildingsData = function(){
@@ -150,8 +156,8 @@ OSMHell.prototype.refreshBuildingsData = function(){
 
 OSMHell.prototype.applyBuildings = function(json, city, street){
 	
-	for(var i in json.rows){
-		this.addBuilding(json.rows[i].name, city, street);
+	for(var i in json.data){
+		this.addBuilding(json.data[i].name, city, street);
 	}
 	
 	this.cities[city].streets[street].loaded = true;
@@ -191,6 +197,10 @@ OSMHell.prototype.buildingChange = function(){
 	else{
 		this.loadBuildingCenter();
 	}
+	
+	if(this.buildingView.selectedIndex > 0){
+		this.setData(this.buildingInput, this.selectedBuilding);
+	}
 };
 
 OSMHell.prototype.loadBuildingCenter = function(){
@@ -215,5 +225,78 @@ OSMHell.prototype.centerMap = function(lonlat){
 	}
 };
 
+OSMHell.prototype.connectToForm = function(formId){
+	
+	if($('#city_chouse', formId).length == 0 && this.cityView == null){
+		this.createFields(formId);
+		this.bindEvents(formId);
+		this.refreshCitiesView();
+	}
+	else {
+		this.bindEvents(formId);
+	}
+	
+};
+
+OSMHell.prototype.bindEvents = function(formId){
+	
+	this.cityView = $('#city_chouse', formId)[0];
+	this.streetView = $('#street_chouse', formId)[0];
+	this.buildingView = $('#bldng_chouse', formId)[0];
+
+	this.cityInput = $('#city', formId)[0];
+	this.streetInput = $('#street', formId)[0];
+	this.buildingInput = $('#house', formId)[0];
+	
+	var thisClosure = this;
+	$(this.cityView).bind('change', function(evnt){thisClosure.cityChange.apply(thisClosure, [evnt]);});
+	$(this.streetView).bind('change', function(evnt){thisClosure.streetChange.apply(thisClosure, [evnt]);});
+	$(this.buildingView).bind('change', function(evnt){thisClosure.buildingChange.apply(thisClosure, [evnt]);});
+	
+	return;
+};
+
+OSMHell.prototype.createFields = function(formId){
+	var table = $('#TblGrid_tab', formId);
+	var rows=$('tr', table);
+	
+	for(var i=0; i < rows.length; i++){
+		var row = rows[i];
+		
+		if(row.id == 'tr_city'){
+			$('.DataTD', row).after('<td class="support"><select class="help-select FormElement ui-widget-content" id="city_chouse"></select></td>');
+		}
+		else if(row.id == 'tr_street'){
+			$('.DataTD', row).after('<td class="support"><select class="help-select FormElement ui-widget-content" id="street_chouse"></select></td>');
+		}
+		else if(row.id == 'tr_house'){
+			$('.DataTD', row).after('<td class="support"><select class="help-select FormElement ui-widget-content" id="bldng_chouse"></select></td>');
+		}
+		else{
+			$('.DataTD', row).after('<td class="support"></td>');
+		}
+	}
+	
+};
+
+OSMHell.prototype.setData = function(input, data){
+	if(input){
+		input.value = data;
+	}
+};
+
+OSMHell.prototype.resetStreetView = function(){
+	if(this.streetView){
+		this.streetView.selectedIndex = 0;
+	}
+	
+	this.resetBuildingView();
+};
+
+OSMHell.prototype.resetBuildingView = function(){
+	if(this.buildingView){
+		this.buildingView.selectedIndex = 0;
+	}
+};
 
 

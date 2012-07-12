@@ -21,57 +21,14 @@
   <script type="text/javascript" src="js/main.js"></script>
     
 </head>
-<body onload="init();">
+<body">
   <div style="height:100%;width:100%;">
-  <div>
-    <table id="tab"></table>
-    <div id="tabp"></div>
-  
-  
-    <form action="/">
-	<table width="400">
-	    <tr>
-		<td>Город</td><td><select id="city_select"></select></td>
-	    </tr>
-	    <tr>
-		<td>Улица</td><td><select id="street_select"></select></td>
-	    </tr>
-	    <tr>
-		<td>Дом</td><td><select id="building_select"></select></td>
-	    </tr>
-	    <tr>
-		<td>Квартира</td><td><input type="text"></input></td>
-	    </tr>
-	    <tr>
-		<td>Контактное лицо</td><td><input type="text"></input></td>
-	    </tr>
-	    <tr>
-		<td>Телефон</td><td><input type="text"></input></td>
-	    </tr>
-	    <tr>
-		<td>Что требуется</td><td><input type="text"></input></td>
-	    </tr>
-	    <tr>
-		<td>Дополнительная информация</td>
-		<td><input type="text"></input></td>
-	    </tr>
-
-	</table>
-    </form>
-  </div>
-  <div id="map" style="">
-  </div>
-  </div>
-  <script type="text/javascript">
-    window.osmhell = new OSMHell($('#city_select')[0], $('#street_select')[0], $('#building_select')[0]);
-    function init(){
-	$.ajax(OSMHell.API_URL, {
-	    data: {'action':'addrselect', 'get' : 'city'},
-	    context : window.osmhell
-	}).done(function ( data ) {
-	    this.applyCityes($.parseJSON(data));
-	});
-    }
-    </script>
+	  <div>
+	    <table id="tab"></table>
+	    <div id="tabp"></div>  
+	  </div>
+	  <div id="map" style="">
+	  </div>
+  </div>  
 </body>
 </html>
