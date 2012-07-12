@@ -14,7 +14,7 @@ $(function(){
   hell.map.allmarkers = {};
 
   // цветные маркеры
-  hell.map.mcolors = new Array(new MarkerIcon({markerColor:'red'}), new MarkerIcon({markerColor:'yellow'}), new MarkerIcon({markerColor:'green'}));
+  hell.map.mcolors = new Array(new MarkerIcon({markerColor:'icon'}),new MarkerIcon({markerColor:'red'}), new MarkerIcon({markerColor:'yellow'}), new MarkerIcon({markerColor:'green'}));
 
   updateMarkers(); //load markers from server
 
@@ -41,11 +41,9 @@ hell.inittab = function(){
       url: hell.p.urlapi+'/data?action=getdata',
       datatype: "json",
       mtype: "POST",
-      colNames:['','','','Город','Улица','Дом','Квартира','Контактное лицо','Телефон','required','info','Состояние жилья','Статус'],
+      colNames:['','Город','Улица','Дом','Квартира','Контактное лицо','Телефон','required','info','Состояние жилья','Статус','',''],
       colModel:[
         {name:'id', index:'id', hidden:true, key:true},
-        {name:'lat', index:'lat', hidden:true},
-        {name:'lon', index:'lon', hidden:true},
         {name:'city', index:'city', width:25, editable:true},
         {name:'street', index:'street', width:50, editable:true},
         {name:'house', index:'house', width:15, editable:true},
@@ -55,7 +53,9 @@ hell.inittab = function(){
         {name:'required', index:'required', width:55, editable:true},
         {name:'info', index:'info', width:55, editable:true},
         {name:'condition_house', index:'condition_house', width:55, editable:true},
-        {name:'status', index:'status', width:55, editable:true,edittype:'select',formatter:'select',editoptions:{value:"1:Новая;2:В работе;3:Закрыта"}}
+        {name:'status', index:'status', width:55, editable:true,edittype:'select',formatter:'select',editoptions:{value:"1:Новая;2:В работе;3:Закрыта"}},
+        {name:'lat', index:'lat', hidden:true, editable:true},
+        {name:'lon', index:'lon', hidden:true, editable:true}
      ],
 //      rowNum:30,
 //      width: 1250,
@@ -195,7 +195,7 @@ updateMarkers = function() {
           var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
           var popupText = $.tmpl(tmpl, point).html();
           marker.bindPopup(popupText);
-          marker.setIcon(hell.map.mcolors[0]);
+          marker.setIcon(hell.map.mcolors[point.status]);
           hell.map.markergroup.addLayer(marker);
           hell.map.allmarkers[point.id] = marker;
           marker._json = point;

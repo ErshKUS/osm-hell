@@ -89,7 +89,7 @@ def getpoint():
   cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
   cur.execute("""
     SELECT id, city, street, house, flat, contact, phone, required, info,
-           lat, lon, condition_house
+           lat, lon, condition_house, status
       FROM hell_data
       WHERE
         lat > %(minlat)s
