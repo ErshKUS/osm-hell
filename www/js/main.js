@@ -15,7 +15,7 @@ $(function(){
   // цветные маркеры
   map.mcolors = new Array(new MarkerIcon({markerColor:'red'}), new MarkerIcon({markerColor:'yellow'}), new MarkerIcon({markerColor:'green'}));
 
-  onmapmove(); //load markers from server
+  updateMarkers(); //load markers from server
 
   if (location.href.search("map.php")>0)
     return;
@@ -130,7 +130,7 @@ hell.inittab = function(){
   
 }
 
-onmapmove = function() {
+updateMarkers = function() {
   //var bnds = map.getBounds();
   bnds = new L.LatLngBounds(new L.LatLng(44.57,36.72), new L.LatLng(45.30, 39.04));
   var tmpl = "<div><table><tr><td><b>Город</b>:<td>${city}"+
@@ -144,7 +144,7 @@ onmapmove = function() {
   		    "<tr><td><b>Состояние жилья</b>:<td>${condition_house}"+
   	     "</table></div>";
   $.ajax({
-    url: "http://ersh.homelinux.com:8092/api/data",
+    url: hell.p.urlapi+"/data",
     type: "GET",
     data: {
       action: "getpoint",
@@ -173,7 +173,7 @@ onmapmove = function() {
   }).fail(function (jqXHR, textStatus) {
     alert("Произошла ошибка при чтении карты");
   });
-  setTimeout(onmapmove, 300000);// reload every 5 minutes
+  setTimeout(updateMarkers, 300000);// reload every 5 minutes
 }
 
 MarkerIcon = L.Icon.Default.extend({
