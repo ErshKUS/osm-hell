@@ -83,7 +83,7 @@ hell.inittab = function(){
       beforeSelectRow: function(rowid) {
         var marker = hell.map.allmarkers[$('#tab').jqGrid('getRowData',rowid).id];
         if (!marker)
-          return;
+          return true;;
 
         hell.map.panTo(marker.getLatLng());
         marker.openPopup();
