@@ -8,7 +8,7 @@ import psycopg2
 import psycopg2.extras
 import db_config
 
-rows=['id','lat','lon','city','street','house','flat','contact','phone','required','info','condition_house']
+rows=['id','lat','lon','city','street','house','flat','contact','phone','required','info','condition_house','status']
 output={}
 
 def getdata():

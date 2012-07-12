@@ -11,6 +11,7 @@ $(function(){
   map.setView(krymsk, 13).addLayer(mapnik);
   map.markergroup = new L.LayerGroup();
   map.addLayer(map.markergroup);
+  map.allmarkers = {};
 
   // цветные маркеры
   map.mcolors = new Array(new MarkerIcon({markerColor:'red'}), new MarkerIcon({markerColor:'yellow'}), new MarkerIcon({markerColor:'green'}));
@@ -24,15 +25,23 @@ $(function(){
   window.osmhell.loadCityes();
   
   hell.inittab();
+  $(window).resize(onresize);
+  onresize();
 });
 
+onresize = function() {
+  $('#tab').jqGrid('setGridHeight', $(window).height()/2-30);
+  $('#map').height($(window).height()-$('#table').height()-3);
+  map.invalidateSize();
+  $('#tab').jqGrid('setGridWidth', $(window).width());
+};
 
 hell.inittab = function(){
   $("#tab").jqGrid({
       url: hell.p.urlapi+'/data?action=getdata',
       datatype: "json",
       mtype: "POST",
-      colNames:['','','','Город','Улица','Дом','Квартира','Контактное лицо','Телефон','required','info','Состояние жилья'],
+      colNames:['','','','Город','Улица','Дом','Квартира','Контактное лицо','Телефон','required','info','Состояние жилья','Статус'],
       colModel:[
         {name:'id', index:'id', hidden:true, key:true},
         {name:'lat', index:'lat', hidden:true},
@@ -45,11 +54,13 @@ hell.inittab = function(){
         {name:'phone', index:'phone', width:40, editable:true},
         {name:'required', index:'required', width:55, editable:true},
         {name:'info', index:'info', width:55, editable:true},
-        {name:'condition_house', index:'condition_house', width:55, editable:true}
+        {name:'condition_house', index:'condition_house', width:55, editable:true},
+        {name:'status', index:'status', width:55, editable:true,edittype:'select',editoptions:{value:"1:Новая;2:В работе;3:Закрыта"}}
      ],
 //      rowNum:30,
-      width: 1250,
+//      width: 1250,
 //      rowList:[30,70],
+      caption:"Таблица данных",
       pager: '#tabp',
       sortname: 'id',
 //      ignoreCase: true,
@@ -70,8 +81,16 @@ hell.inittab = function(){
         })
       },*/
       beforeSelectRow: function(rowid) {
-        alert($('#tab').jqGrid('getRowData',rowid).id);
+        var marker = map.allmarkers[$('#tab').jqGrid('getRowData',rowid).id];
+        if (!marker)
+          return;
+
+        map.panTo(marker.getLatLng());
+        marker.openPopup();
         return true;
+      },
+      onHeaderClick: function() {
+        onresize();
       }
     /*  beforeSelectRow: function(rowid) {
         $("#moreval_grid").jqGrid(
@@ -137,7 +156,7 @@ hell.inittab = function(){
   );
   
   
-}
+};
 
 updateMarkers = function() {
   //var bnds = map.getBounds();
@@ -176,6 +195,8 @@ updateMarkers = function() {
           marker.bindPopup(popupText);
           marker.setIcon(map.mcolors[0]);
           map.markergroup.addLayer(marker);
+          map.allmarkers[point.id] = marker;
+          marker._json = point;
         }
       }
     }
