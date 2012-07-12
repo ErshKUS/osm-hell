@@ -11,6 +11,7 @@ $(function(){
   map.setView(krymsk, 13).addLayer(mapnik);
   map.markergroup = new L.LayerGroup();
   map.addLayer(map.markergroup);
+  map.allmarkers = {};
 
   // цветные маркеры
   map.mcolors = new Array(new MarkerIcon({markerColor:'red'}), new MarkerIcon({markerColor:'yellow'}), new MarkerIcon({markerColor:'green'}));
@@ -71,7 +72,12 @@ hell.inittab = function(){
         })
       },*/
       beforeSelectRow: function(rowid) {
-        alert($('#tab').jqGrid('getRowData',rowid).id);
+        var marker = map.allmarkers[$('#tab').jqGrid('getRowData',rowid).id];
+        if (!marker)
+          return;
+
+        map.panTo(marker.getLatLng());
+        marker.openPopup();
         return true;
       }
     /*  beforeSelectRow: function(rowid) {
@@ -175,6 +181,8 @@ updateMarkers = function() {
           marker.bindPopup(popupText);
           marker.setIcon(map.mcolors[0]);
           map.markergroup.addLayer(marker);
+          map.allmarkers[point.id] = marker;
+          marker._json = point;
         }
       }
     }
