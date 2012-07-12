@@ -14,14 +14,13 @@ output={}
 def getdata():
   getval={}
   getval['_search'] = getvalues.getfirst('_search','')
-  
+
   where = ' true '
   for name in rows:
     getval[name] = getvalues.getfirst(name,'')
     if (getval[name]<>'' and getval['_search']<>''):
       getval[name]=getval[name]+'%'
-      where = where + ' AND '+name+' LIKE %('+name+')s'
-      
+      where = where + ' AND '+name+' ILIKE %('+name+')s'
 
   cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
   cur.execute("""
@@ -45,7 +44,7 @@ def setdata():
       getval[name] = float(getvalues.getfirst(name,'0'))
     else:
       getval[name] = getvalues.getfirst(name,'')
-    
+
   cur = conn.cursor()
   try:
     if ( getval['oper'] == 'add' ):
@@ -54,28 +53,16 @@ def setdata():
           VALUES (%(city)s, %(street)s, %(house)s, %(flat)s, %(contact)s, %(phone)s, %(required)s, %(info)s, %(lat)s, %(lon)s, %(condition_house)s);
       ;""", getval)
     elif ( getval['oper'] == 'edit' ):
-#      for name in ['langname','id']:
-#        if (getval[name] == ''):
-#          output['error']=("%(name)s is not null"%{'name':name})
-#          return
       cur.execute("""
-
         UPDATE hell_data
-           SET city=%(city)s, street=%(street)s, house=%(house)s, flat=%(flat)s, contact=%(contact)s, phone=%(phone)s, 
+           SET city=%(city)s, street=%(street)s, house=%(house)s, flat=%(flat)s, contact=%(contact)s, phone=%(phone)s,
                required=%(required)s, info=%(info)s, lat=%(lat)s, lon=%(lon)s, condition_house=%(condition_house)s
           WHERE id=%(id)s;
+      ;""", getval)
 
-      ;""", getval)      
-    
     conn.commit()
   except Exception, e:
     output['error'] = str(e)
-  
-
-  
-  
-  
-  
 
 def getpoint():
   getval={}
@@ -86,11 +73,11 @@ def getpoint():
   for k in getval:
     if (getval[k] == 0):
       output['error']=("%(k)s is not null"%{'k':k})
-      return  
-  
+      return
+
   cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
   cur.execute("""
-    SELECT id, city, street, house, flat, contact, phone, required, info, 
+    SELECT id, city, street, house, flat, contact, phone, required, info,
            lat, lon, condition_house
       FROM hell_data
       WHERE
@@ -103,10 +90,10 @@ def getpoint():
   for record in cur:
     data.append(record)
   output['data']=data
-  
 
 
-#send = "Content-type: text/javascript;" # debug  
+
+#send = "Content-type: text/javascript;" # debug
 send = "Content-type: application/json;" # production
 send = send + " Charset=Utf-8\nAccess-Control-Allow-Origin: *\nAccess-Control-Request-Headers: X-Requested-With, X-Prototype-Version\nAccess-Control-Request-Method: GET\n"
 print send # production

@@ -22,7 +22,8 @@
     
 </head>
 <body onload="init();">
-  <div style="width:100%;height:35%">
+  <div style="height:100%;width:100%;">
+  <div>
     <table id="tab"></table>
     <div id="tabp"></div>
   
@@ -58,7 +59,8 @@
 	</table>
     </form>
   </div>
-  <div id="map" style="height:65%;">
+  <div id="map" style="">
+  </div>
   </div>
   <script type="text/javascript">
     window.osmhell = new OSMHell($('#city_select')[0], $('#street_select')[0], $('#building_select')[0]);

@@ -55,7 +55,7 @@ hell.inittab = function(){
 //      ignoreCase: true,
 //      pgbuttons: false,
 //      pginput: false,
-      height: 200,
+      height: 250,
       viewrecords: true,
       modal: false,
       jsonReader: { repeatitems: false },
@@ -83,7 +83,7 @@ hell.inittab = function(){
   $("#tab").jqGrid('filterToolbar',{searchOnEnter:false});
   
   $("#tab").jqGrid('navGrid','#tabp',
-    {edit:true,add:true,del:false,search:false,refresh:false},
+    {edit:true,add:true,del:false,search:false,refresh:true},
     { //edit
       closeAfterEdit: true,
       afterSubmit: function (response, postdata) {
@@ -123,7 +123,10 @@ hell.inittab = function(){
         var new_id = "1";
         $(this).jqGrid('setGridParam', {datatype:'json'});
         return [success,message,new_id];
-      }
+      },
+      afterShowForm : function (formid) {
+        e=1;
+      } 
     }
   );
   
