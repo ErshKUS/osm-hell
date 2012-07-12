@@ -23,8 +23,8 @@
 </head>
 <body">
   <div style="height:100%;width:100%;">
-	  <div>
-	    <table id="tab"></table>
+	  <div id=tab>
+	    <table id="tabt"></table>
 	    <div id="tabp"></div>  
 	  </div>
 	  <div id="map" style="">

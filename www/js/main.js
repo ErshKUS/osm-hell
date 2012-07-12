@@ -1,13 +1,13 @@
 var hell={p:{}};
 
 $(function(){
-  hell.p.urlapi='http://ersh.homelinux.com:8092/api';
+  hell.p.urlapi='http://hell.ershkus.ru/api';
   L.Icon.Default.imagePath='img';
 
   hell.map = new L.Map('map');
   var mapnik = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: "Map data &copy; <a href='http://osm.org'>OpenStreetMap</a> contributors"});
   
-  var krymsk = new L.LatLng(44.915, 38.0);
+  var krymsk = new L.LatLng(44.9289, 37.9870);
   hell.map.setView(krymsk, 13).addLayer(mapnik);
   hell.map.markergroup = new L.LayerGroup();
   hell.map.addLayer(hell.map.markergroup);
@@ -30,14 +30,14 @@ $(function(){
 });
 
 onresize = function() {
-  $('#tab').jqGrid('setGridHeight', $(window).height()/2-30);
-  $('#map').height($(window).height()-$('#table').height()-3);
+  $('#tabt').jqGrid('setGridHeight', $(window).height()/2-30);
+  $('#map').height($(window).height()-$('#tab').height()-3);
   hell.map.invalidateSize();
-  $('#tab').jqGrid('setGridWidth', $(window).width());
+  $('#tabt').jqGrid('setGridWidth', $(window).width());
 };
 
 hell.inittab = function(){
-  $("#tab").jqGrid({
+  $("#tabt").jqGrid({
       url: hell.p.urlapi+'/data?action=getdata',
       datatype: "json",
       mtype: "POST",
@@ -81,7 +81,7 @@ hell.inittab = function(){
         })
       },*/
       beforeSelectRow: function(rowid) {
-        var marker = hell.map.allmarkers[$('#tab').jqGrid('getRowData',rowid).id];
+        var marker = hell.map.allmarkers[$('#tabt').jqGrid('getRowData',rowid).id];
         if (!marker) {
           hell.map.closePopup();
           return true;
@@ -105,9 +105,9 @@ hell.inittab = function(){
         return true;
       }*/
   });
-  $("#tab").jqGrid('filterToolbar',{searchOnEnter:false});
+  $("#tabt").jqGrid('filterToolbar',{searchOnEnter:false});
   
-  $("#tab").jqGrid('navGrid','#tabp',
+  $("#tabt").jqGrid('navGrid','#tabp',
     {edit:true,add:true,del:false,search:false,refresh:true},
     { //edit
       closeAfterEdit: true,
