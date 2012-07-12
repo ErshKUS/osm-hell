@@ -33,7 +33,7 @@ hell.inittab = function(){
         {name:'condition_house', index:'condition_house', width:55, editable:true}
      ],
 //      rowNum:30,
-      width: 1500,
+      width: 1250,
 //      rowList:[30,70],
       pager: '#tabp',
       sortname: 'id',
