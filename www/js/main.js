@@ -133,6 +133,16 @@ hell.inittab = function(){
 onmapmove = function() {
   //var bnds = map.getBounds();
   bnds = new L.LatLngBounds(new L.LatLng(44.57,36.72), new L.LatLng(45.30, 39.04));
+  var tmpl = "<div><table><tr><td><b>Город</b>:<td>${city}"+
+  		    "<tr><td><b>Улица</b>:<td>${street}"+
+  		    "<tr><td><b>Дом</b>:<td>${house}"+
+  		    "<tr><td><b>Квартира</b>:<td>${flat}"+
+  		    "<tr><td><b>Контактное лицо</b>:<td>${contact}"+
+  		    "<tr><td><b>Телефон</b>:<td>${phone}"+
+  		    "<tr><td><b>Что нужно</b>:<td>${required}"+
+  		    "<tr><td><b>Доп. инфо.</b>:<td>${info}"+
+  		    "<tr><td><b>Состояние жилья</b>:<td>${condition_house}"+
+  	     "</table></div>";
   $.ajax({
     url: "http://ersh.homelinux.com:8092/api/data",
     type: "GET",
@@ -153,7 +163,8 @@ onmapmove = function() {
           // каждую точку сложить в одно сообщение
           var point = json.data[i];
           var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
-          marker.bindPopup(point.info);
+          var popupText = $.tmpl(tmpl, point).html();
+          marker.bindPopup(popupText);
           marker.setIcon(map.mcolors[0]);
           map.markergroup.addLayer(marker);
         }
