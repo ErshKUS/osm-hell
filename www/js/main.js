@@ -4,17 +4,17 @@ $(function(){
   hell.p.urlapi='http://ersh.homelinux.com:8092/api';
   L.Icon.Default.imagePath='img';
 
-  map = new L.Map('map');
+  hell.map = new L.Map('map');
   var mapnik = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: "Map data &copy; <a href='http://osm.org'>OpenStreetMap</a> contributors"});
   
   var krymsk = new L.LatLng(44.915, 38.0);
-  map.setView(krymsk, 13).addLayer(mapnik);
-  map.markergroup = new L.LayerGroup();
-  map.addLayer(map.markergroup);
-  map.allmarkers = {};
+  hell.map.setView(krymsk, 13).addLayer(mapnik);
+  hell.map.markergroup = new L.LayerGroup();
+  hell.map.addLayer(hell.map.markergroup);
+  hell.map.allmarkers = {};
 
   // цветные маркеры
-  map.mcolors = new Array(new MarkerIcon({markerColor:'red'}), new MarkerIcon({markerColor:'yellow'}), new MarkerIcon({markerColor:'green'}));
+  hell.map.mcolors = new Array(new MarkerIcon({markerColor:'red'}), new MarkerIcon({markerColor:'yellow'}), new MarkerIcon({markerColor:'green'}));
 
   updateMarkers(); //load markers from server
 
@@ -32,7 +32,7 @@ $(function(){
 onresize = function() {
   $('#tab').jqGrid('setGridHeight', $(window).height()/2-30);
   $('#map').height($(window).height()-$('#table').height()-3);
-  map.invalidateSize();
+  hell.map.invalidateSize();
   $('#tab').jqGrid('setGridWidth', $(window).width());
 };
 
@@ -81,11 +81,11 @@ hell.inittab = function(){
         })
       },*/
       beforeSelectRow: function(rowid) {
-        var marker = map.allmarkers[$('#tab').jqGrid('getRowData',rowid).id];
+        var marker = hell.map.allmarkers[$('#tab').jqGrid('getRowData',rowid).id];
         if (!marker)
           return;
 
-        map.panTo(marker.getLatLng());
+        hell.map.panTo(marker.getLatLng());
         marker.openPopup();
         return true;
       },
@@ -186,16 +186,16 @@ updateMarkers = function() {
       if (json.hasOwnProperty("error")) {
         alert("Произошла ошибка!\n"+json.error);
       } else {
-        map.markergroup.clearLayers();
+        hell.map.markergroup.clearLayers();
         for(var i=0;i<json.data.length;i++) {
           // каждую точку сложить в одно сообщение
           var point = json.data[i];
           var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
           var popupText = $.tmpl(tmpl, point).html();
           marker.bindPopup(popupText);
-          marker.setIcon(map.mcolors[0]);
-          map.markergroup.addLayer(marker);
-          map.allmarkers[point.id] = marker;
+          marker.setIcon(hell.map.mcolors[0]);
+          hell.map.markergroup.addLayer(marker);
+          hell.map.allmarkers[point.id] = marker;
           marker._json = point;
         }
       }
