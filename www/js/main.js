@@ -52,6 +52,7 @@ hell.inittab = function(){
 //      rowNum:30,
       width: 1250,
 //      rowList:[30,70],
+      caption:"Таблица данных",
       pager: '#tabp',
       sortname: 'id',
 //      ignoreCase: true,
