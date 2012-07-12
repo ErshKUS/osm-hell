@@ -57,7 +57,7 @@
 	</table>
     </form>
   </div>
-  <div id="map" style="height:65%;display:none;">
+  <div id="map" style="height:65%;">
   </div>
   <script type="text/javascript">
     window.osmhell = new OSMHell($('#city_select')[0], $('#street_select')[0], $('#building_select')[0]);
