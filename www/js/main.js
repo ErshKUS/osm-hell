@@ -81,11 +81,11 @@ hell.inittab = function(){
         })
       },*/
       beforeSelectRow: function(rowid) {
-        var marker = map.allmarkers[$('#tab').jqGrid('getRowData',rowid).id];
+        var marker = hell.map.allmarkers[$('#tab').jqGrid('getRowData',rowid).id];
         if (!marker)
           return;
 
-        map.panTo(marker.getLatLng());
+        hell.map.panTo(marker.getLatLng());
         marker.openPopup();
         return true;
       },
@@ -186,16 +186,16 @@ updateMarkers = function() {
       if (json.hasOwnProperty("error")) {
         alert("Произошла ошибка!\n"+json.error);
       } else {
-        map.markergroup.clearLayers();
+        hell.map.markergroup.clearLayers();
         for(var i=0;i<json.data.length;i++) {
           // каждую точку сложить в одно сообщение
           var point = json.data[i];
           var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
           var popupText = $.tmpl(tmpl, point).html();
           marker.bindPopup(popupText);
-          marker.setIcon(map.mcolors[0]);
-          map.markergroup.addLayer(marker);
-          map.allmarkers[point.id] = marker;
+          marker.setIcon(hell.map.mcolors[0]);
+          hell.map.markergroup.addLayer(marker);
+          hell.map.allmarkers[point.id] = marker;
           marker._json = point;
         }
       }
