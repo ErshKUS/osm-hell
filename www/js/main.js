@@ -32,7 +32,7 @@ hell.inittab = function(){
       url: hell.p.urlapi+'/data?action=getdata',
       datatype: "json",
       mtype: "POST",
-      colNames:['','','','Город','Улица','Дом','Квартира','Контактное лицо','Телефон','required','info','Состояние жилья'],
+      colNames:['','','','Город','Улица','Дом','Квартира','Контактное лицо','Телефон','required','info','Состояние жилья','Статус'],
       colModel:[
         {name:'id', index:'id', hidden:true, key:true},
         {name:'lat', index:'lat', hidden:true},
@@ -45,7 +45,8 @@ hell.inittab = function(){
         {name:'phone', index:'phone', width:40, editable:true},
         {name:'required', index:'required', width:55, editable:true},
         {name:'info', index:'info', width:55, editable:true},
-        {name:'condition_house', index:'condition_house', width:55, editable:true}
+        {name:'condition_house', index:'condition_house', width:55, editable:true},
+        {name:'status', index:'status', width:55, editable:true,edittype:'select',editoptions:{value:"1:Новая;2:В работе;3:Закрыта"}}
      ],
 //      rowNum:30,
       width: 1250,
