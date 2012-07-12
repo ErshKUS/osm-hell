@@ -21,7 +21,7 @@ $(function(){
   if (location.href.search("map.php")>0)
     return;
 
-  window.osmhell = new OSMHell($('#city_select')[0], $('#street_select')[0], $('#building_select')[0]);
+  window.osmhell = new OSMHell();
   window.osmhell.loadCityes();
   
   hell.inittab();
