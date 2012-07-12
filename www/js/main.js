@@ -1,6 +1,9 @@
-var hell={};
+var hell={p:{}};
 
 $(function(){
+
+  hell.p.urlapi='http://ersh.homelinux.com:8092/api';
+
   map = new L.Map('map');
   var mapnik = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: "Map data &copy; <a href='http://osm.org'>OpenStreetMap</a> contributors"});
   
@@ -16,16 +19,18 @@ $(function(){
 
 hell.inittab = function(){
   $("#tab").jqGrid({
-      url:'http://ersh.homelinux.com:8092/api/data?action=getdata',
+      url: hell.p.urlapi+'/data?action=getdata',
       datatype: "json",
       mtype: "POST",
-      colNames:['','Город','Улица','Дом','Квартира','Контактное лицо','Телефон','required','info','Состояние жилья'],
+      colNames:['','','','Город','Улица','Дом','Квартира','Контактное лицо','Телефон','required','info','Состояние жилья'],
       colModel:[
         {name:'id', index:'id', hidden:true, key:true},
+        {name:'lat', index:'lat', hidden:true},
+        {name:'lon', index:'lon', hidden:true},
         {name:'city', index:'city', width:25, editable:true},
         {name:'street', index:'street', width:50, editable:true},
-        {name:'house', index:'house', width:20, editable:true},
-        {name:'flat', index:'flat', width:20, editable:true},
+        {name:'house', index:'house', width:15, editable:true},
+        {name:'flat', index:'flat', width:15, editable:true},
         {name:'contact', index:'contact', width:60, editable:true},
         {name:'phone', index:'phone', width:40, editable:true},
         {name:'required', index:'required', width:55, editable:true},
@@ -40,11 +45,11 @@ hell.inittab = function(){
 //      ignoreCase: true,
 //      pgbuttons: false,
 //      pginput: false,
-      height: 250,
+      height: 200,
       viewrecords: true,
       modal: false,
       jsonReader: { repeatitems: false },
-      editurl:"http://ersh.homelinux.com:8092/api/data?action=setdata",
+      editurl: hell.p.urlapi+'/data?action=setdata',
       sortorder: "desc",
  /*     loadComplete: function(){
         $('#more_grid [aria-describedby=more_grid_check]>input').change(function(){
@@ -65,16 +70,16 @@ hell.inittab = function(){
         return true;
       }*/
   });
-  $("#tab").jqGrid('filterToolbar');
+  $("#tab").jqGrid('filterToolbar',{searchOnEnter:false});
   
   $("#tab").jqGrid('navGrid','#tabp',
     {edit:true,add:true,del:false,search:false,refresh:false},
     { //edit
       closeAfterEdit: true,
-   /*   afterSubmit: function (response, postdata) {
+      afterSubmit: function (response, postdata) {
         var success = true;
         var message = ""
-        var json = eval('(' + response.responseText + ')');
+        var json = jQuery.parseJSON(response.responseText);
         if(json.errors) {
           success = false;
           for(i=0; i < json.errors.length; i++) {
@@ -87,14 +92,14 @@ hell.inittab = function(){
         }
         $(this).jqGrid('setGridParam', {datatype:'json'});
         return [success,message];
-      }*/
+      }
     },
     { //add
       closeAfterAdd : true,
-  /*    afterSubmit: function (response, postdata) {
+      afterSubmit: function (response, postdata) {
         var success = true;
         var message = ""
-        var json = eval('(' + response.responseText + ')');
+        var json = jQuery.parseJSON(response.responseText);
         if(json.errors) {
           success = false;
           for(i=0; i < json.errors.length; i++) {
@@ -108,7 +113,7 @@ hell.inittab = function(){
         var new_id = "1";
         $(this).jqGrid('setGridParam', {datatype:'json'});
         return [success,message,new_id];
-      }*/
+      }
     }
   );
   
