@@ -55,7 +55,7 @@ hell.inittab = function(){
         {name:'required', index:'required', width:55, editable:true},
         {name:'info', index:'info', width:55, editable:true},
         {name:'condition_house', index:'condition_house', width:55, editable:true},
-        {name:'status', index:'status', width:55, editable:true,edittype:'select',editoptions:{value:"1:Новая;2:В работе;3:Закрыта"}}
+        {name:'status', index:'status', width:55, editable:true,edittype:'select',formatter:'select',editoptions:{value:"1:Новая;2:В работе;3:Закрыта"}}
      ],
 //      rowNum:30,
 //      width: 1250,

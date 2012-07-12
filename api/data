@@ -9,6 +9,8 @@ import psycopg2.extras
 import db_config
 
 rows=['id','lat','lon','city','street','house','flat','contact','phone','required','info','condition_house','status']
+rowsInt=['id','status']
+rowsFloat=['lat','lon']
 output={}
 
 def getdata():
@@ -40,23 +42,32 @@ def setdata():
   getval={}
   getval['oper'] = getvalues.getfirst('oper','')
   for name in rows:
-    if (name=='lat' or name=='lon'):
+    try:
+      i=rowsInt.index(name)
+      getval[name] = int(getvalues.getfirst(name,'0'))
+      continue
+    except ValueError:
+      pass
+    try:
+      i=rowsFloat.index(name)
       getval[name] = float(getvalues.getfirst(name,'0'))
-    else:
-      getval[name] = getvalues.getfirst(name,'')
+      continue
+    except ValueError:
+      pass
+    getval[name] = getvalues.getfirst(name,'')
 
   cur = conn.cursor()
   try:
     if ( getval['oper'] == 'add' ):
       cur.execute("""
-        INSERT INTO hell_data(city, street, house, flat, contact, phone, required, info, lat, lon, condition_house)
-          VALUES (%(city)s, %(street)s, %(house)s, %(flat)s, %(contact)s, %(phone)s, %(required)s, %(info)s, %(lat)s, %(lon)s, %(condition_house)s);
+        INSERT INTO hell_data(city, street, house, flat, contact, phone, required, info, lat, lon, condition_house, status)
+          VALUES (%(city)s, %(street)s, %(house)s, %(flat)s, %(contact)s, %(phone)s, %(required)s, %(info)s, %(lat)s, %(lon)s, %(condition_house)s, %(status)s);
       ;""", getval)
     elif ( getval['oper'] == 'edit' ):
       cur.execute("""
         UPDATE hell_data
-           SET city=%(city)s, street=%(street)s, house=%(house)s, flat=%(flat)s, contact=%(contact)s, phone=%(phone)s,
-               required=%(required)s, info=%(info)s, lat=%(lat)s, lon=%(lon)s, condition_house=%(condition_house)s
+          SET city=%(city)s, street=%(street)s, house=%(house)s, flat=%(flat)s, contact=%(contact)s, phone=%(phone)s,
+            required=%(required)s, info=%(info)s, lat=%(lat)s, lon=%(lon)s, condition_house=%(condition_house)s, status=%(status)s
           WHERE id=%(id)s;
       ;""", getval)
 
