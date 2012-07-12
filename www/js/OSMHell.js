@@ -219,10 +219,9 @@ OSMHell.prototype.getSelectedBuildingKey = function(){
 	return this.selectedCity + this.selectedStreet + this.selectedBuilding;
 };
 
-OSMHell.prototype.centerMap = function(lonlat){
-	if(console && console.log){
-		console.log(lonlat);
-	}
+OSMHell.prototype.centerMap = function(data){
+	var lonlat = data['data'][0];
+	map.setView(new L.LatLng(lonlat.lat, lonlat.lon), 17);
 };
 
 OSMHell.prototype.connectToForm = function(formId){
