@@ -25,8 +25,16 @@ $(function(){
   window.osmhell.loadCityes();
   
   hell.inittab();
+  $(window).resize(onresize);
+  onresize();
 });
 
+onresize = function() {
+  $('#tab').jqGrid('setGridHeight', $(window).height()/2-30);
+  $('#map').height($(window).height()-$('#table').height()-3);
+  map.invalidateSize();
+  $('#tab').jqGrid('setGridWidth', $(window).width());
+}
 
 hell.inittab = function(){
   $("#tab").jqGrid({
@@ -50,7 +58,7 @@ hell.inittab = function(){
         {name:'status', index:'status', width:55, editable:true,edittype:'select',editoptions:{value:"1:Новая;2:В работе;3:Закрыта"}}
      ],
 //      rowNum:30,
-      width: 1250,
+//      width: 1250,
 //      rowList:[30,70],
       caption:"Таблица данных",
       pager: '#tabp',
@@ -80,6 +88,9 @@ hell.inittab = function(){
         map.panTo(marker.getLatLng());
         marker.openPopup();
         return true;
+      },
+      onHeaderClick: function() {
+        onresize();
       }
     /*  beforeSelectRow: function(rowid) {
         $("#moreval_grid").jqGrid(

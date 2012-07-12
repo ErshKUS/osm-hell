@@ -23,12 +23,12 @@
 </head>
 <body onload="init();">
   <div style="height:100%;width:100%;">
-  <div>
+  <div id='table'>
     <table id="tab"></table>
     <div id="tabp"></div>
   
   
-    <form action="/">
+    <form action="/" style="display:none">
 	<table width="400">
 	    <tr>
 		<td>Город</td><td><select id="city_select"></select></td>
