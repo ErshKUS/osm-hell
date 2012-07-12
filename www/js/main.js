@@ -4,7 +4,7 @@ $(function(){
   hell.p.urlapi='http://ersh.homelinux.com:8092/api';
   L.Icon.Default.imagePath='img';
 
-  map = new L.Map('map');
+  hell.map = new L.Map('map');
   var mapnik = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: "Map data &copy; <a href='http://osm.org'>OpenStreetMap</a> contributors"});
   
   var krymsk = new L.LatLng(44.915, 38.0);
