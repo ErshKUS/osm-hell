@@ -10,12 +10,17 @@ $(function(){
   hell.map.allmarkers = {};
 
   // цветные маркеры
-  hell.map.mcolors = new Array(new MarkerIcon({markerColor:'icon'}),new MarkerIcon({markerColor:'red'}), new MarkerIcon({markerColor:'yellow'}), new MarkerIcon({markerColor:'green'}));
+  hell.map.mcolors = new Array(
+  	new MarkerIcon({markerColor:'icon'}),
+  	new MarkerIcon({markerColor:'red'}), 
+  	new MarkerIcon({markerColor:'yellow'}), 
+  	new MarkerIcon({markerColor:'green'})
+  );
 
-  updateMarkers(); //load markers from server
-
-  if (location.href.search("map.php")>0)
+  if (location.href.search("map.php")>0) {
+    updateMarkers(); //load markers from server
     return;
+  }
 
   window.osmhell = new OSMHell();
   window.osmhell.loadCityes();
@@ -89,6 +94,25 @@ hell.inittab = function(){
       },
       onHeaderClick: function() {
         onresize();
+      },
+      gridComplete: function() {
+        var data = $('#tabt').getRowData();
+        hell.map.markergroup.clearLayers();
+        for(var i=0;i<data.length;i++) {
+          // каждую точку сложить в одно сообщение
+          var point = data[i];
+          if (!point.lat || !point.lon)
+            continue;
+          var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
+          var popupText = $.tmpl(hell.popuptempl, point).html();
+          marker.bindPopup(popupText);
+          var icon = hell.map.mcolors[point.status];
+          if (icon)
+            marker.setIcon(icon);
+          hell.map.markergroup.addLayer(marker);
+          hell.map.allmarkers[point.id] = marker;
+          marker._json = point;
+        }
       }
     /*  beforeSelectRow: function(rowid) {
         $("#moreval_grid").jqGrid(
@@ -164,16 +188,6 @@ hell.inittab = function(){
 updateMarkers = function() {
   //var bnds = map.getBounds();
   bnds = new L.LatLngBounds(new L.LatLng(44.57,36.72), new L.LatLng(45.30, 39.04));
-  var tmpl = "<div><table><tr><td><b>Город</b>:<td>${city}"+
-  		    "<tr><td><b>Улица</b>:<td>${street}"+
-  		    "<tr><td><b>Дом</b>:<td>${house}"+
-  		    "<tr><td><b>Квартира</b>:<td>${flat}"+
-  		    "<tr><td><b>Контактное лицо</b>:<td>${contact}"+
-  		    "<tr><td><b>Телефон</b>:<td>${phone}"+
-  		    "<tr><td><b>Что нужно</b>:<td>${required}"+
-  		    "<tr><td><b>Доп. инфо.</b>:<td>${info}"+
-  		    "<tr><td><b>Состояние жилья</b>:<td>${condition_house}"+
-  	     "</table></div>";
   $.ajax({
     url: hell.p.urlapi+"/data",
     type: "GET",
@@ -194,7 +208,7 @@ updateMarkers = function() {
           // каждую точку сложить в одно сообщение
           var point = json.data[i];
           var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
-          var popupText = $.tmpl(tmpl, point).html();
+          var popupText = $.tmpl(hell.popuptempl, point).html();
           marker.bindPopup(popupText);
           marker.setIcon(hell.map.mcolors[point.status]);
           hell.map.markergroup.addLayer(marker);
