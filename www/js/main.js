@@ -208,6 +208,8 @@ updateMarkers = function() {
         for(var i=0;i<json.data.length;i++) {
           // каждую точку сложить в одно сообщение
           var point = json.data[i];
+          if (!point.lat || !point.lon)
+            continue;
           var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
           var popupText = $.tmpl(hell.popuptempl, point).html();
           marker.bindPopup(popupText);
@@ -231,6 +233,16 @@ MarkerIcon = L.Icon.Default.extend({
     return img;
   }
 });
+
+hell.askPoint = function() {
+  $('#map').css('cursor', 'crosshair');
+  hell.map.on('click', hell.putPoint);
+}
+hell.putPoint = function(e) {
+  $('#map').css('cursor', 'auto');
+  hell.map.off('click', hell.putPoint);
+  alert(e.latlng.lat);
+}
 
 OSMHell = function OSMHell(){
 	
@@ -408,6 +420,7 @@ OSMHell.prototype.refreshBuildingsData = function(doneCallback, contex){
 
 OSMHell.prototype.applyBuildings = function(json, city, street){
 	
+	json.data.sort(alphanum); // natural order
 	for(var i in json.data){
 		this.addBuilding(json.data[i].name, city, street);
 	}
@@ -612,3 +625,33 @@ OSMHell.prototype.select = function(value, sinp){
 		}
 	}
 };
+
+// natural order sorting
+function alphanum(a, b) {
+  function chunkify(t) {
+    var tz = [], x = 0, y = -1, n = 0, i, j;
+
+    while (i = (j = t.charAt(x++)).charCodeAt(0)) {
+      var m = (i == 46 || (i >=48 && i <= 57));
+      if (m !== n) {
+        tz[++y] = "";
+        n = m;
+      }
+      tz[y] += j;
+    }
+    return tz;
+  }
+
+  var aa = chunkify(a.name);
+  var bb = chunkify(b.name);
+
+  for (x = 0; aa[x] && bb[x]; x++) {
+    if (aa[x] !== bb[x]) {
+      var c = Number(aa[x]), d = Number(bb[x]);
+      if (c == aa[x] && d == bb[x]) {
+        return c - d;
+      } else return (aa[x] > bb[x]) ? 1 : -1;
+    }
+  }
+  return aa.length - bb.length;
+}
