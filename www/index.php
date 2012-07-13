@@ -16,9 +16,10 @@
   <script type="text/javascript" src="js/jquery-ui-1.8.21.custom.min.js"></script>
   <script type="text/javascript" src="js/i18n/grid.locale-ru.js"></script>
   <script type="text/javascript" src="js/jquery.jqGrid.min.js"></script>
-  <script type="text/javascript" src="js/OSMHell.js"></script>
       
+  <script type="text/javascript" src="js/conf.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="js/OSMHell.js"></script>
     
 </head>
 <body">
