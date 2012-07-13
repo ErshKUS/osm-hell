@@ -8,7 +8,7 @@ OSMHell = function OSMHell(){
 	this.coordsCache = {};
 };
 
-OSMHell.API_URL = 'http://ersh.homelinux.com:8090/api/searchselect';
+OSMHell.API_URL = 'http://hell.ershkus.ru/api/searchselect';
 
 OSMHell.prototype.loadCityes = function(json){
 	$.ajax(OSMHell.API_URL, {
@@ -241,7 +241,7 @@ OSMHell.prototype.getSelectedBuildingKey = function(){
 
 OSMHell.prototype.centerMap = function(data){
 	var lonlat = data['data'][0];
-	map.setView(new L.LatLng(lonlat.lat, lonlat.lon), 17);
+	hell.map.setView(new L.LatLng(lonlat.lat, lonlat.lon), 17);
 };
 
 OSMHell.prototype.connectToForm = function(formId){
@@ -278,7 +278,7 @@ OSMHell.prototype.bindEvents = function(formId){
 };
 
 OSMHell.prototype.createFields = function(formId){
-	var table = $('#TblGrid_tab', formId);
+	var table = $('#TblGrid_tabt', formId);
 	var rows=$('tr', table);
 	
 	for(var i=0; i < rows.length; i++){
