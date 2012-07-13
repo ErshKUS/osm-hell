@@ -123,6 +123,7 @@ hell.inittab = function(){
           message +=json.error;
         }
         $(this).jqGrid('setGridParam', {datatype:'json'});
+        updateMarkers();
         return [success,message];
       },
       afterShowForm : function (formid) {
@@ -148,6 +149,7 @@ hell.inittab = function(){
         }
         var new_id = "1";
         $(this).jqGrid('setGridParam', {datatype:'json'});
+        updateMarkers();
         return [success,message,new_id];
       },
       afterShowForm : function (formid) {
