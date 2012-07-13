@@ -8,7 +8,7 @@ OSMHell = function OSMHell(){
 	this.coordsCache = {};
 };
 
-OSMHell.API_URL = 'http://hell.ershkus.ru/api/searchselect';
+OSMHell.API_URL = hell.p.urlsearch + '/searchselect';
 
 OSMHell.prototype.loadCityes = function(json){
 	$.ajax(OSMHell.API_URL, {
