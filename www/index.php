@@ -19,7 +19,6 @@
       
   <script type="text/javascript" src="js/conf.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
-  <script type="text/javascript" src="js/OSMHell.js"></script>
     
 </head>
 <body">
