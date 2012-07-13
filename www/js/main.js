@@ -207,6 +207,8 @@ updateMarkers = function() {
         for(var i=0;i<json.data.length;i++) {
           // каждую точку сложить в одно сообщение
           var point = json.data[i];
+          if (!point.lat || !point.lon)
+            continue;
           var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
           var popupText = $.tmpl(hell.popuptempl, point).html();
           marker.bindPopup(popupText);
