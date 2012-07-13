@@ -477,7 +477,7 @@ OSMHell.prototype.connectToForm = function(formId){
 		this.bindEvents(formId);
 	}
 	
-	this.fromInputsToSelect();
+	this.fillFormFields();
 	
 };
 
@@ -545,8 +545,20 @@ OSMHell.prototype.resetBuildingView = function(){
 	}
 };
 
-OSMHell.prototype.fromInputsToSelect = function(){
-	if(this.cityInput && this.cityInput.value != null && this.cities[this.cityInput.value] != null){
+OSMHell.prototype.fillFormFields = function(){
+	
+	if(this.cityInput.value == "" && this.selectedCity != null){
+		this.setData(this.cityInput, this.selectedCity);
+		
+		if(this.streetInput.value == "" && this.selectedStreet != null){
+			this.setData(this.streetInput, this.selectedStreet);
+			
+			if(this.buildingInput.value == "" && this.selectedBuilding != null){
+				this.setData(this.buildingInput, this.selectedBuilding);
+			}
+		}
+	}
+	else if(this.cityInput && this.cityInput.value != null && this.cities[this.cityInput.value] != null){
 		this.selectedCity = this.cities[this.cityInput.value].name;
 		this.refreshStreetsData(function(){
 			
