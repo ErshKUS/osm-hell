@@ -1,9 +1,4 @@
-hell={p:{}};
-
 $(function(){
-  hell.p.urlapi='http://hell.ershkus.ru/api';
-  hell.p.urlsearch='http://hell.ershkus.ru/api';
-  L.Icon.Default.imagePath='img';
 
   hell.map = new L.Map('map');
   var mapnik = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: "Map data &copy; <a href='http://osm.org'>OpenStreetMap</a> contributors"});

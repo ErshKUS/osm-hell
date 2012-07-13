@@ -47,14 +47,12 @@ def setdata():
       getval[name] = int(getvalues.getfirst(name,'0'))
       continue
     except ValueError:
-      pass
-    try:
-      i=rowsFloat.index(name)
-      getval[name] = float(getvalues.getfirst(name,'0'))
-      continue
-    except ValueError:
-      pass
-    getval[name] = getvalues.getfirst(name,'')
+      try:
+        i=rowsFloat.index(name)
+        getval[name] = float(getvalues.getfirst(name,'0'))
+        continue
+      except ValueError:
+        getval[name] = getvalues.getfirst(name,'')
 
   cur = conn.cursor()
   try:
