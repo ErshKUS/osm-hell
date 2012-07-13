@@ -18,6 +18,28 @@ def getdata():
   getval['_search'] = getvalues.getfirst('_search','')
 
   where = ' true '
+  
+  for name in rows:
+    try:
+      i=rowsInt.index(name)
+      getval[name] = int(getvalues.getfirst(name,'0'))
+      if (getval['_search']=='true' and getval[name]<>0):
+        where = where + ' AND '+name+' = %('+name+')s'
+      continue
+    except ValueError:
+      try:
+        i=rowsFloat.index(name)
+        getval[name] = float(getvalues.getfirst(name,'0'))
+        if (getval['_search']=='true' and getval[name]<>0):
+          where = where + ' AND '+name+' = %('+name+')s'
+        continue
+      except ValueError:
+        getval[name] = getvalues.getfirst(name,'')
+        if (getval['_search']=='true' and getval[name]<>''):
+          getval[name]=getval[name]+'%'
+          where = where + ' AND '+name+' ILIKE %('+name+')s'
+        
+  
   for name in rows:
     getval[name] = getvalues.getfirst(name,'')
     if (getval[name]<>'' and getval['_search']<>''):
