@@ -217,7 +217,7 @@ MarkerIcon = L.Icon.Default.extend({
 
 OSMHell = function OSMHell(){
 	
-	OSMHell.API_URL = hell.p.urlapi + '/searchselect';
+	OSMHell.API_URL = hell.p.urlsearch + '/searchselect';
 
 	this.cityView = null;
 	this.streetView = null;
