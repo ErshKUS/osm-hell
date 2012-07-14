@@ -574,13 +574,13 @@ OSMHell.prototype.createFields = function(formId){
 		var row = rows[i];
 		
 		if(row.id == 'tr_city'){
-			$('.DataTD', row).after('<td class="support"><select class="help-select FormElement ui-widget-content" id="city_chouse"></select></td>');
+			$('.DataTD', row).after('<td class="support"><select class="help-select FormElement ui-widget-content ui-corner-all" id="city_chouse"></select></td>');
 		}
 		else if(row.id == 'tr_street'){
-			$('.DataTD', row).after('<td class="support"><select class="help-select FormElement ui-widget-content" id="street_chouse"></select></td>');
+			$('.DataTD', row).after('<td class="support"><select class="help-select FormElement ui-widget-content ui-corner-all" id="street_chouse"></select></td>');
 		}
 		else if(row.id == 'tr_house'){
-			$('.DataTD', row).after('<td class="support"><select class="help-select FormElement ui-widget-content" id="bldng_chouse"></select></td>');
+			$('.DataTD', row).after('<td class="support"><select class="help-select FormElement ui-widget-content ui-corner-all" id="bldng_chouse"></select></td>');
 		}
 		else{
 			$('.DataTD', row).after('<td class="support"></td>');
