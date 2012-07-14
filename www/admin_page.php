@@ -19,6 +19,7 @@
   <script type="text/javascript" src="js/jquery.tmpl.min.js"></script>
   <script type="text/javascript" src="js/conf.js"></script>
   <script type="text/javascript" src="js/admin_page.js"></script>
+  <script type="text/javascript" src="js/form-customization.js"></script>
     
 </head>
 <body">
