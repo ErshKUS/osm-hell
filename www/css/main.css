@@ -31,3 +31,23 @@ table {
 .help-select {
 	width: 150px;
 }
+
+#tab {
+  z-index: 50;
+}
+#map {
+  z-index: 100;
+}
+.jqmOverlay {
+  z-index: 55 !important;
+}
+
+#ViewTbl_tabt tr.FormData[rowpos], #TblGrid_tabt tr.FormData[rowpos]{
+  display: table-row !important;
+}
+
+.ui-jqdialog-content .CaptionTD {
+  white-space: normal !important;;
+}
+
+td {vertical-align: top;}

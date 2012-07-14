@@ -18,7 +18,7 @@
       
   <script type="text/javascript" src="js/jquery.tmpl.min.js"></script>
   <script type="text/javascript" src="js/conf.js"></script>
-  <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="js/admin_page.js"></script>
     
 </head>
 <body">
