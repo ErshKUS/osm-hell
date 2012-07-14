@@ -46,7 +46,7 @@ hell.inittab = function(){
       
       
 
-      colNames:['id','Временной шамп','Город','Улица','Дом','Имя человека','Дата рождения','Возраст','Что известно','Подробности о человеке','Источник информации','Кто разыскивает','Способы связи с ищущим','Биографические данные, персональные данные и связи', 'anthropometric', 'psychological', 'medicalinfo', 'ticketstatus', 'infomoderators', 'infovolunteer', 'namevolunteer', 'datechecking','lat','lon'],
+      colNames:['id','Временной шамп','Город','Улица','Дом','Имя человека','Дата рождения','Возраст','Что известно','Подробности о человеке','Источник информации','Кто разыскивает','Способы связи с ищущим','Биографические данные, персональные данные и связи', 'Медицинские сведения', 'Антропометрические сведения', 'Психологические и поведенческие особенности', 'Статус заявки', 'Информация от модераторов списка', 'Информация от волонтеров с места', 'Кто проверял, телефон', 'Дата проверки','lat','lon'],
       colModel:[
         {name:'id', index:'id', hidden:true, key:true, hidden: true},
         {name:'timestamp', index:'timestamp', width:30, editable:true},
@@ -62,9 +62,9 @@ hell.inittab = function(){
         {name:'sourceperson', index:'sourceperson', width:55, editable:true},
         {name:'sourcecontact', index:'sourcecontact', width:55, editable:true},
         {name:'relationship', index:'relationship', width:55, editable:true},
+        {name:'medicalinfo', index:'medicalinfo', width:55, editable:true},
         {name:'anthropometric', index:'anthropometric', width:55, editable:true},
         {name:'psychological', index:'psychological', width:55, editable:true},
-        {name:'medicalinfo', index:'medicalinfo', width:55, editable:true},
         {name:'ticketstatus', index:'ticketstatus', width:55, editable:true},
         {name:'infomoderators', index:'infomoderators', width:55, editable:true},
         {name:'infovolunteer', index:'infovolunteer', width:55, editable:true},
