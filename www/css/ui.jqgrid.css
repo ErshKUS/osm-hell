@@ -104,11 +104,14 @@ tr.ui-search-toolbar select {margin: 1px 0px 0px 0px}
 .EditTable td textarea { width:auto; height:auto;}
 .ui-jqdialog-content td.EditButton {text-align: right;border-top: 0px none;border-left: 0px none;border-right: 0px none; padding-bottom:5px; padding-top:5px;}
 .ui-jqdialog-content td.navButton {text-align: center; border-left: 0px none;border-top: 0px none;border-right: 0px none; padding-bottom:5px; padding-top:5px;}
-.ui-jqdialog-content input.FormElement {padding:.3em}
+.ui-jqdialog-content input.FormElement {padding:.3em; margin: 2px 0 2px 0;}
 .ui-jqdialog-content .data-line {padding-top:.1em;border: 0px none;}
 
-.ui-jqdialog-content .CaptionTD {vertical-align: middle;border: 0px none; padding: 2px;white-space: nowrap;}
-.ui-jqdialog-content .DataTD {padding: 2px; border: 0px none; vertical-align: top;}
+.CaptionTD {vertical-align: middle;border: 0px none;white-space: nowrap;vertical-align: middle;}
+.DataTD {border: 0px none; vertical-align: top;vertical-align: middle;}
+.ui-jqdialog-content{vertical-align: middle;border: 0px none; padding: 2px;white-space: nowrap;}
+.ui-jqdialog-content{padding: 2px; border: 0px none; vertical-align: top;}
+
 .ui-jqdialog-content .form-view-data {white-space:pre}
 .fm-button { display: inline-block; margin:0 4px 0 0; padding: .4em .5em; text-decoration:none !important; cursor:pointer; position: relative; text-align: center; zoom: 1; }
 .fm-button-icon-left { padding-left: 1.9em; }
@@ -142,3 +145,5 @@ tr.ui-search-toolbar select {margin: 1px 0px 0px 0px}
 .ui-jqgrid .tree-wrap-ltr {float: left;}
 .ui-jqgrid .tree-wrap-rtl {float: right;}
 .ui-jqgrid .ui-ellipsis {text-overflow:ellipsis;}
+select.FormElement{padding: 0.24em; margiin: 0 2px 0 2px;}
+.support{vertical-align: middle;}
