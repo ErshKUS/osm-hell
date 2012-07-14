@@ -1,4 +1,23 @@
+$.extend({
+  getUrlVars: function(){
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+      hash = hashes[i].split('=');
+      vars.push(hash[0]);
+      vars[hash[0]] = hash[1];
+    }
+    return vars;
+  },
+  getUrlVar: function(name){
+    return $.getUrlVars()[name];
+  }
+});
+
 $(function(){
+
+  hell.p.key = $.getUrlVar('key') || ''
 
   hell.map = new L.Map('map');
   var mapnik = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: "Map data &copy; <a href='http://osm.org'>OpenStreetMap</a> contributors"});
@@ -31,7 +50,7 @@ $(function(){
 });
 
 onresize = function() {
-  $('#tabt').jqGrid('setGridHeight', $(window).height()*0.6-30);
+  $('#tabt').jqGrid('setGridHeight', $(window).height()*0.4-30);
   $('#map').height($(window).height()-$('#tab').height()-3);
   hell.map.invalidateSize();
   $('#tabt').jqGrid('setGridWidth', $(window).width());
@@ -49,7 +68,7 @@ hell.inittab = function(){
       colNames:['id','Временной шамп','Город','Улица','Дом','Имя человека','Дата рождения','Возраст','Что известно','Подробности о человеке','Источник информации','Кто разыскивает','Способы связи с ищущим','Биографические данные, персональные данные и связи', 'anthropometric', 'psychological', 'medicalinfo', 'ticketstatus', 'infomoderators', 'infovolunteer', 'namevolunteer', 'datechecking','lat','lon'],
       colModel:[
         {name:'id', index:'id', hidden:true, key:true, hidden: true},
-        {name:'timestamp', index:'timestamp', width:30, editable:true},
+        {name:'timestamp', index:'timestamp', width:30, editable:true, hidden: true},
         {name:'city', index:'city', width:25, editable:true},
         {name:'street', index:'street', width:50, editable:true},
         {name:'house', index:'house', width:15, editable:true},
@@ -59,12 +78,12 @@ hell.inittab = function(){
         {name:'status', index:'status', width:55, editable:true},
         {name:'details', index:'details', width:55, editable:true},
         {name:'source', index:'source', width:55, editable:true},
-        {name:'sourceperson', index:'sourceperson', width:55, editable:true},
-        {name:'sourcecontact', index:'sourcecontact', width:55, editable:true},
-        {name:'relationship', index:'relationship', width:55, editable:true},
-        {name:'anthropometric', index:'anthropometric', width:55, editable:true},
-        {name:'psychological', index:'psychological', width:55, editable:true},
-        {name:'medicalinfo', index:'medicalinfo', width:55, editable:true},
+        {name:'sourceperson', index:'sourceperson', width:55, editable:true, hidden: true},
+        {name:'sourcecontact', index:'sourcecontact', width:55, editable:true, hidden: true},
+        {name:'relationship', index:'relationship', width:55, editable:true, hidden: true},
+        {name:'anthropometric', index:'anthropometric', width:55, editable:true, hidden: true},
+        {name:'psychological', index:'psychological', width:55, editable:true, hidden: true},
+        {name:'medicalinfo', index:'medicalinfo', width:55, editable:true, hidden: true},
         {name:'ticketstatus', index:'ticketstatus', width:55, editable:true},
         {name:'infomoderators', index:'infomoderators', width:55, editable:true},
         {name:'infovolunteer', index:'infovolunteer', width:55, editable:true},
@@ -92,7 +111,7 @@ hell.inittab = function(){
         {name:'lon', index:'lon', hidden:true, editable:true}
      ],
      */
-      rowNum:500,
+      rowNum:50000,
 //      width: 1250,
 //      rowList:[30,70],
       caption:"Таблица данных",
@@ -104,9 +123,8 @@ hell.inittab = function(){
       height: 250,
       viewrecords: true,
       modal: false,
-      loadonce: true,
       jsonReader: { repeatitems: false },
-      editurl: hell.p.urlapi+'/data?action=setdata',
+      editurl: hell.p.urlapi+'/data?action=setdata&key='+hell.p.key,
       sortorder: "desc",
       beforeSelectRow: function(rowid) {
         var marker = hell.map.allmarkers[$('#tabt').jqGrid('getRowData',rowid).id];
@@ -143,8 +161,7 @@ hell.inittab = function(){
       }
   });
   $("#tabt").jqGrid('filterToolbar',{searchOnEnter:false});
- 
-/* 
+  
   $("#tabt").jqGrid('navGrid','#tabp',
     {edit:true,add:true,del:false,search:false,refresh:true,view:true},
     { //edit
@@ -174,7 +191,7 @@ hell.inittab = function(){
     },
     { //add
       closeAfterAdd : true,
-      width :  400,
+      width :  500,
       afterSubmit: function (response, postdata) {
         var success = true;
         var message = "";
@@ -196,10 +213,10 @@ hell.inittab = function(){
       },
       afterShowForm : function (formid) {
     	  window.osmhell.connectToForm(formid);        
-      }
+      } 
     }
   );
-  */
+  
   
 };
 
@@ -557,13 +574,13 @@ OSMHell.prototype.createFields = function(formId){
 		var row = rows[i];
 		
 		if(row.id == 'tr_city'){
-			$('.DataTD', row).after('<td class="support"><select class="help-select FormElement ui-widget-content ui-corner-all" id="city_chouse"></select></td>');
+			$('.DataTD', row).after('<td class="support"><select class="help-select FormElement ui-widget-content" id="city_chouse"></select></td>');
 		}
 		else if(row.id == 'tr_street'){
-			$('.DataTD', row).after('<td class="support"><select class="help-select FormElement ui-widget-content ui-corner-all" id="street_chouse"></select></td>');
+			$('.DataTD', row).after('<td class="support"><select class="help-select FormElement ui-widget-content" id="street_chouse"></select></td>');
 		}
 		else if(row.id == 'tr_house'){
-			$('.DataTD', row).after('<td class="support"><select class="help-select FormElement ui-widget-content ui-corner-all" id="bldng_chouse"></select></td>');
+			$('.DataTD', row).after('<td class="support"><select class="help-select FormElement ui-widget-content" id="bldng_chouse"></select></td>');
 		}
 		else{
 			$('.DataTD', row).after('<td class="support"></td>');

@@ -10,13 +10,13 @@
   <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
   <link type="text/css" href="css/ui.jqgrid.css" rel="stylesheet" />
   <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/jquery-ui-1.8.21.custom.min.js"></script>
   <script type="text/javascript" src="js/jquery.json-2.3.min.js"></script>
   <script type="text/javascript" src="js/jquery.cookie.js"></script>
-  <script type="text/javascript" src="js/jquery.tmpl.min.js"></script>
-  <script type="text/javascript" src="js/jquery-ui-1.8.21.custom.min.js"></script>
   <script type="text/javascript" src="js/i18n/grid.locale-ru.js"></script>
-  <script type="text/javascript" src="js/jquery.jqGrid.min.js"></script>
+  <script type="text/javascript" src="js/jquery.jqGrid.src.js"></script>
       
+  <script type="text/javascript" src="js/jquery.tmpl.min.js"></script>
   <script type="text/javascript" src="js/conf.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
     

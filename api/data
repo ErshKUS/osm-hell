@@ -8,9 +8,17 @@ import psycopg2
 import psycopg2.extras
 import db_config
 
-rows=['id','lat','lon','city','street','house','flat','contact','phone','required','info','condition_house','status']
-rowsInt=['id','status']
+#rows=['id','lat','lon','city','street','house','flat','contact','phone','required','info','condition_house','status']
+#rowsInt=['id','status']
+#rowsFloat=['lat','lon']
+
+rows=['lat','lon','nameperson', 'dob', 'age', 'city', 'street', 'house', 'source', 'sourceperson', 'status', 'details', 'sourcecontact', 'relationship',
+'anthropometric', 'psychological', 'medicalinfo', 'timestamp', 'ticketstatus', 'infomoderators', 'infovolunteer', 'namevolunteer', 'datechecking']
+rowsInt=['id']
 rowsFloat=['lat','lon']
+rowsKey=['id']
+rowsAll=rowsKey+rows
+
 output={}
 
 def getdata():
@@ -18,7 +26,36 @@ def getdata():
   getval['_search'] = getvalues.getfirst('_search','')
 
   where = ' true '
-  for name in rows:
+  
+  for name in rowsAll:
+    try:
+      i=rowsInt.index(name)
+      getval[name] = int(getvalues.getfirst(name,'0'))
+      if (getval['_search']=='true' and getval[name]<>0):
+        where = where + ' AND '+name+' = %('+name+')s'
+      continue
+    except ValueError:
+      try:
+        i=rowsFloat.index(name)
+        getval[name] = float(getvalues.getfirst(name,'0'))
+        if (getval['_search']=='true' and getval[name]<>0):
+          where = where + ' AND '+name+' = %('+name+')s'
+        continue
+      except ValueError:
+        getval[name] = getvalues.getfirst(name,'')
+        if (getval['_search']=='true' and getval[name]<>''):
+          getval[name]=getval[name]+'%'
+          where = where + ' AND '+name+' ILIKE %('+name+')s'
+          
+  getsidx = getvalues.getfirst('sidx',rowsAll[0])
+  i=rowsAll.index(getsidx)
+  getsord = getvalues.getfirst('sord','asc')
+  if (getsord<>'asc' and getsord<>'desc'):
+    getsord='asc'
+  order=' '+getsidx+' '+getsord+' '
+        
+  
+  for name in rowsAll:
     getval[name] = getvalues.getfirst(name,'')
     if (getval[name]<>'' and getval['_search']<>''):
       getval[name]=getval[name]+'%'
@@ -28,9 +65,11 @@ def getdata():
   cur.execute("""
     SELECT *
     FROM
-      hell_data
+      hell_peopleseach
     WHERE
       """+where+"""
+    ORDER BY
+      """+order+"""
   ;""",getval)
   data = {}
   data['rows']=[]
@@ -41,7 +80,7 @@ def getdata():
 def setdata():
   getval={}
   getval['oper'] = getvalues.getfirst('oper','')
-  for name in rows:
+  for name in rowsAll:
     try:
       i=rowsInt.index(name)
       getval[name] = int(getvalues.getfirst(name,'0'))
@@ -58,14 +97,17 @@ def setdata():
   try:
     if ( getval['oper'] == 'add' ):
       cur.execute("""
-        INSERT INTO hell_data(city, street, house, flat, contact, phone, required, info, lat, lon, condition_house, status)
-          VALUES (%(city)s, %(street)s, %(house)s, %(flat)s, %(contact)s, %(phone)s, %(required)s, %(info)s, %(lat)s, %(lon)s, %(condition_house)s, %(status)s);
+        INSERT INTO hell_peopleseach(""" + ', '.join(rows) + """ )
+          VALUES ( %(""" + ')s, %('.join(rows) + """)s );
       ;""", getval)
     elif ( getval['oper'] == 'edit' ):
+      setcolumn = ''
+      for name in rows:
+        setcolumn = setcolumn + name + '=%(' + name + ')s, '
+      setcolumn = setcolumn[:-2]
       cur.execute("""
-        UPDATE hell_data
-          SET city=%(city)s, street=%(street)s, house=%(house)s, flat=%(flat)s, contact=%(contact)s, phone=%(phone)s,
-            required=%(required)s, info=%(info)s, lat=%(lat)s, lon=%(lon)s, condition_house=%(condition_house)s, status=%(status)s
+        UPDATE hell_peopleseach
+          SET """ + setcolumn + """
           WHERE id=%(id)s;
       ;""", getval)
 
@@ -86,9 +128,8 @@ def getpoint():
 
   cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
   cur.execute("""
-    SELECT id, city, street, house, flat, contact, phone, required, info,
-           lat, lon, condition_house, status
-      FROM hell_data
+    SELECT *
+      FROM hell_peopleseach
       WHERE
         lat > %(minlat)s
         and lat < %(maxlat)s
