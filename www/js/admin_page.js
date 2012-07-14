@@ -189,6 +189,10 @@ hell.inittab = function(){
     	  window.osmhell.hideOverlay();
     	  window.osmhell.attachMap(hell.map);
     	  window.osmhell.connectToForm(formid);        
+      },
+      onClose : function(){
+    	  window.osmhell.formActive = false;
+    	  return true;
       }
     },
     { //add
@@ -217,7 +221,11 @@ hell.inittab = function(){
     	  window.osmhell.hideOverlay();
     	  window.osmhell.attachMap(hell.map);
     	  window.osmhell.connectToForm(formid);        
-      } 
+      },
+      onClose : function(){
+    	  window.osmhell.formActive = false;
+    	  return true;
+      }
     }
   );
   
