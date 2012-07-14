@@ -21,7 +21,7 @@
   <script type="text/javascript" src="js/main.js"></script>
     
 </head>
-<body">
+<body>
   <div style="height:100%;width:100%;">
 	  <div id=tab>
 	    <table id="tabt"></table>
