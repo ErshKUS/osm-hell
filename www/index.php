@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
 <head>
   <title>osm-hell</title>
@@ -24,7 +24,15 @@
 </head>
 <body>
   <div style="height:100%;width:100%;">
-	  <div id=tab>
+	  <div id="tab">
+      <div id="tabptop" class="ui-jqgrid">
+        <div class="ui-state-default ui-jqgrid-pager ui-corner-bottom">
+          <table class="ui-pg-table navtable"><tr>
+            <td class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-document-b"></span>Фильтр 1</td>
+            <td class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-document-b"></span>Фильтр 2</td>
+          <tr></table>
+        </div>
+      </div>
 	    <table id="tabt"></table>
 	    <div id="tabp"></div>  
 	  </div>

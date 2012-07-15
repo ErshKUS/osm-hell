@@ -75,6 +75,10 @@ def getdata():
   ;""",getval)
   data=[]
   for record in cur:
+#    for name in rowsFloat:
+#      if ((name in record) and record[name]<>''):
+#        record[name]=float(record[name])
+
     data.append(record)
   #print json.dumps(data)
   output['rows']=data

@@ -137,6 +137,7 @@ hell.inittab = function(){
       caption:"Таблица данных",
       pager: '#tabp',
       sortname: 'id',
+      viewsortcols: true,
       ignoreCase: true,
 //      pgbuttons: false,
 //      pginput: false,
@@ -171,6 +172,10 @@ hell.inittab = function(){
           var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
           var popupText = $.tmpl(hell.popuptempl, point).html();
           marker.bindPopup(popupText);
+          //marker.rowid=point.id
+          //marker.on('click',function(e){
+          //  $("#tabt").jqGrid('setSelection',e.target.rowid);
+          //})
           var icon = hell.map.mcolors[point.status];
           if (icon)
             marker.setIcon(icon);

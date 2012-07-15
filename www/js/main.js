@@ -28,6 +28,11 @@ $(function(){
   hell.inittab();
   $(window).resize(onresize);
   onresize();
+  
+  $("#tabptop td.ui-pg-button").hover(
+    function(){ $(this).addClass("ui-state-hover") },
+    function(){ $(this).removeClass("ui-state-hover") }
+  );
 });
 
 onresize = function() {
@@ -46,8 +51,9 @@ hell.inittab = function(){
       
       
 
-      colNames:['id','Временной шамп','Город','Улица','Дом','Имя человека','Дата рождения','Возраст','Что известно','Подробности о человеке','Источник информации','Кто разыскивает','Способы связи с ищущим','Биографические данные, персональные данные и связи', 'Медицинские сведения', 'Антропометрические сведения', 'Психологические и поведенческие особенности', 'Статус заявки', 'Информация от модераторов списка', 'Информация от волонтеров с места', 'Кто проверял, телефон', 'Дата проверки','lat','lon'],
+      colNames:['','id','Временной шамп','Город','Улица','Дом','Имя человека','Дата рождения','Возраст','Что известно','Подробности о человеке','Источник информации','Кто разыскивает','Способы связи с ищущим','Биографические данные, персональные данные и связи', 'Медицинские сведения', 'Антропометрические сведения', 'Психологические и поведенческие особенности', 'Статус заявки', 'Информация от модераторов списка', 'Информация от волонтеров с места', 'Кто проверял, телефон', 'Дата проверки','lat','lon'],
       colModel:[
+        {name:'check', index:'check', width:15, editable:false, search:true, edittype:'checkbox', editoptions:{value:"True:False"}, formatter:"checkbox", formatoptions:{disabled:false}},      
         {name:'id', index:'id', hidden:true, key:true, hidden: true},
         {name:'timestamp', index:'timestamp', width:30, editable:true},
         {name:'city', index:'city', width:25, editable:true},
@@ -98,6 +104,7 @@ hell.inittab = function(){
       caption:"Таблица данных",
       pager: '#tabp',
       sortname: 'id',
+      viewsortcols: [true],
       ignoreCase: true,
 //      pgbuttons: false,
 //      pginput: false,
@@ -108,6 +115,14 @@ hell.inittab = function(){
       jsonReader: { repeatitems: false },
       editurl: hell.p.urlapi+'/data?action=setdata',
       sortorder: "desc",
+      loadComplete: function(){
+        $('#tabt [aria-describedby=tabt_check]>input').change(function(){
+          $("#tabt").jqGrid().setRowData(
+            $(this).closest('tr').attr('id'),
+            {check:this.checked}
+          )
+        })
+      },      
       beforeSelectRow: function(rowid) {
         var marker = hell.map.allmarkers[$('#tabt').jqGrid('getRowData',rowid).id];
         if (!marker) {
@@ -143,7 +158,26 @@ hell.inittab = function(){
       }
   });
   $("#tabt").jqGrid('filterToolbar',{searchOnEnter:false});
- 
+
+  $("#tabt")
+    .navGrid('#tabp',{edit:false,add:false,del:false,search:true,refresh:false})
+    .navButtonAdd('#tabp',{
+      caption:"Распечатать выбранные", 
+      buttonicon:"ui-icon-print", 
+      onClickButton: function(){
+        
+      }, 
+      position:"last"
+    })
+    .navButtonAdd('#tabp',{
+      caption:"Распечатать выбранные", 
+      buttonicon:"ui-icon-print", 
+      onClickButton: function(){
+        
+      }, 
+      position:"last"
+    });
+  
 /* 
   $("#tabt").jqGrid('navGrid','#tabp',
     {edit:true,add:true,del:false,search:false,refresh:true,view:true},
