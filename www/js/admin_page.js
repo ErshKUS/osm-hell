@@ -65,7 +65,7 @@ hell.inittab = function(){
       
       
 
-      colNames:['id','Временной шамп','Город','Улица','Дом','Имя человека','Дата рождения','Возраст','Что известно','Подробности о человеке','Источник информации','Кто разыскивает','Способы связи с ищущим','Биографические данные, персональные данные и связи', 'anthropometric', 'psychological', 'medicalinfo', 'ticketstatus', 'infomoderators', 'infovolunteer', 'namevolunteer', 'datechecking','lat','lon'],
+      colNames:['id','Временной шамп','Город','Улица','Дом','Имя человека','Дата рождения','Возраст','Что известно','Подробности о человеке','Источник информации','Кто разыскивает','Способы связи с ищущим','Биографические данные, персональные данные и связи', 'Медицинские сведения', 'Антропометрические сведения', 'Психологические и поведенческие особенности', 'Статус заявки', 'Информация от модераторов списка', 'Информация от волонтеров с места', 'Кто проверял, телефон', 'Дата проверки','lat','lon'],
       colModel:[
         {name:'id', index:'id', hidden:true, key:true, hidden: true},
         {name:'timestamp', index:'timestamp', width:30, editable:true, hidden: true},
@@ -79,11 +79,11 @@ hell.inittab = function(){
         {name:'details', index:'details', width:55, editable:true},
         {name:'source', index:'source', width:55, editable:true},
         {name:'sourceperson', index:'sourceperson', width:55, editable:true, hidden: true},
-        {name:'sourcecontact', index:'sourcecontact', width:55, editable:true, hidden: true},
-        {name:'relationship', index:'relationship', width:55, editable:true, hidden: true},
-        {name:'anthropometric', index:'anthropometric', width:55, editable:true, hidden: true},
-        {name:'psychological', index:'psychological', width:55, editable:true, hidden: true},
-        {name:'medicalinfo', index:'medicalinfo', width:55, editable:true, hidden: true},
+        {name:'sourcecontact', index:'sourcecontact', width:55, editable:true, hidden: true}, // 'Способы связи с ищущим'
+        {name:'relationship', index:'relationship', width:55, editable:true, hidden: true}, // 'Биографические данные, персональные данные и связи'
+        {name:'medicalinfo', index:'medicalinfo', width:55, editable:true, hidden: true}, // 'Медицинские сведения'
+        {name:'anthropometric', index:'anthropometric', width:55, editable:true, hidden: true}, // 'Антропометрические сведения'
+        {name:'psychological', index:'psychological', width:55, editable:true, hidden: true}, // 'Психологические и поведенческие особенности'
         {name:'ticketstatus', index:'ticketstatus', width:55, editable:true},
         {name:'infomoderators', index:'infomoderators', width:55, editable:true},
         {name:'infovolunteer', index:'infovolunteer', width:55, editable:true},

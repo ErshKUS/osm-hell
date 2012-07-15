@@ -1,0 +1,118 @@
+﻿<html>
+  <head>
+    <title>Поиск людей в Крымске и Крымском районе Краснодарского края - osm-hell</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <link type="text/css" href="css/input_people.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="body">
+      <div id="head">
+        <h1>Поиск людей в Крымске и Крымском районе Краснодарского края</h1>
+        <p>С помощью этой единой формы Вы можете разместить запрос на поиск человека в Крымском районе, связь с которым прервана или Вам ничего не известно о его судьбе.</p>
+        <p>Поступающая информация будет использоваться волонтерами для поисков на месте, по мере поисков информации, в таблице будет обновляться статус и источник информации. Также информация будет передана в органы внутренних дел, службы спасения, общественные организации-партнеры, органы местного самоуправления и иные структуры. Предоставление данных о разыскиваемых лицах иным организациям осуществляется исключительно в целях содействия розыску.</p>
+        <p>Важно! Заполняйте форму только, если разыскиваете пропавшего или не выходящего на связь родственника/знакомого из зоны бедствия.</p>
+        <p>...</p>
+        <p>ВНИМАНИЕ! ЕСЛИ НАШЛИ ЧЕЛОВЕКА - ОБЯЗАТЕЛЬНО!<br>
+          Информацию по найденным людям из списка сообщайте звонком или смс на номера:<br>
+          +7 928 275 1978 Александр (Краснодар, Крымск)<br>
+          +7 906 792 19 47 Ирина (Москва)</p>
+        <p>Координаторы списка поиска:<br>
+          Александр (Краснодар, Крымск) +7 928 275-19-78</p>
+        <p></p>
+      </div>
+      <div id="form">
+        <form method="post" action="/api/data?action=setdata" >
+          <input name="oper" type="hidden" value="add">
+          <div class="item">
+            <p class="label">Имя разыскиваемого человека</p>
+            <p class="info">Ф.И.О. (также указать девичью фамилию или Ф.И.О. до изменения в ЗАГС)</p>
+            <input name="nameperson" type="text" size="50">
+          </div>
+          <div class="item">
+            <p class="label">Что Вам достоверно известно о человеке</p>
+            <p class="info">Выберите вариант</p>
+            <ul class="choices">
+              <li class="choice-item"><input name="status" type="radio" class="radio" value="Живы">Живы
+              <li class="choice-item"><input name="status" type="radio" class="radio" value="Живы, но утрачена связь">Живы, но утрачена связь
+              <li class="choice-item"><input name="status" type="radio" class="radio" value="Пропали без вести">Пропали без вести
+              <li class="choice-item"><input name="status" type="radio" class="radio" value="Погибли">Погибли
+              <li class="choice-item"><input name="status" type="radio" class="radio" value="Ничего не известно">Ничего не известно
+            <ul>
+          </div>
+          <div class="item">
+            <p class="label">Населенный пункт</p>
+            <p class="info">В каком населенном пункте ищем. Например: Крымск</p>
+            <input name="city" type="text" size="50">
+          </div>
+          <div class="item">
+            <p class="label">Улица</p>
+            <p class="info">Желательно выбрать</p>
+            <input name="street" type="text" size="50">
+          </div>
+          <div class="item">
+            <p class="label">Дом</p>
+            <p class="info">Желательно выбрать</p>
+            <input name="house" type="text" size="50">
+          </div>
+          <div class="item">
+            <p class="label">Дата рождения</p>
+            <p class="info">формат дд.мм.гггг</p>
+            <input name="dob" type="text" size="50">
+          </div>
+          <div class="item">
+            <p class="label">Возраст</p>
+            <p class="info"></p>
+            <input name="dob" type="text" size="50">
+          </div>
+          <div class="item">
+            <p class="label">Подробности о человеке, предполагаемом месте нахождения</p>
+            <p class="info">Когда последний раз выходил на связь? Где находился в момент последнего контакта?</p>
+            <textarea name="details" cols="70" rows="6"></textarea>
+          </div>
+          <div class="item">
+            <p class="label">Биографические данные, персональные данные и связи</p>
+            <p class="info">Кем вам приходится? Степень родства?</p>
+            <textarea name="relationship" cols="70" rows="6"></textarea>
+          </div>
+          <div class="item">
+            <p class="label">Антропометрические сведения</p>
+            <p class="info">Антропометрические и физические характеристики, стоматологический статус (зубная карта/формула, если имеется)</p>
+            <textarea name="anthropometric" cols="70" rows="6"></textarea>
+          </div>
+          <div class="item">
+            <p class="label">Психологические и поведенческие особенности</p>
+            <p class="info">Болезни, особенности связанные с болезнями</p>
+            <textarea name="psychological" cols="70" rows="6"></textarea>
+          </div>
+          <div class="item">
+            <p class="label">Медицинские сведения</p>
+            <p class="info">Болезни, особенности связанные с болезнями</p>
+            <textarea name="medicalinfo" cols="70" rows="6"></textarea>
+          </div>
+          <div class="item">
+            <p class="label">Источник информации</p>
+            <p class="info">Откуда получены данные</p>
+            <input name="source" type="text" size="50">
+          </div>
+          <div class="item">
+            <p class="label">Имя того кто разыскивает - Ваше имя</p>
+            <p class="info">ФИО того, кто ищет человека, чтобы сообщить если найдем</p>
+            <input name="sourceperson" type="text" size="50">
+          </div>
+          <div class="item">
+            <p class="label">Способы связи с Вами. Обязательно телефон. Можно e-mail и прочее</p>
+            <p class="info">Если найдем - куда позвонить, как связаться с Вами?</p>
+            <textarea name="sourcecontact" cols="70" rows="6"></textarea>
+          </div>
+          <div class="submit">
+            <input name="submit" type="submit" value="Отправить">
+          </div>
+          
+
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
+
+
