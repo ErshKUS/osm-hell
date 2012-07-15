@@ -20,6 +20,10 @@
   <script type="text/javascript" src="js/conf.js"></script>
   <script type="text/javascript" src="js/admin_page.js"></script>
   <script type="text/javascript" src="js/form-customization.js"></script>
+
+  <script type="text/javascript" src="js/llplugins/Layers.Load.js"></script>
+  <script type="text/javascript" src="js/llplugins/Layer.Deferred.js"></script>
+  
     
 </head>
 <body">

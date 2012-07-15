@@ -17,10 +17,30 @@ $.extend({
 
 $(function(){
 
-  hell.p.key = $.getUrlVar('key') || ''
+  hell.p.key = $.getUrlVar('key') || '';
 
   hell.map = new L.Map('map');
   var mapnik = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: "Map data &copy; <a href='http://osm.org'>OpenStreetMap</a> contributors"});
+  
+  var layerdefs = {
+		  gsat: { name: "Google", js: ["http://maps.google.com/maps/api/js?v=3.2&sensor=false&callback=L.Google.asyncInitialize", "js/llplugins/Google.js"],
+			  init: function() {return new L.Google(); }
+		  },
+		  ysat: { name: "Yandex", js: ["http://api-maps.yandex.ru/2.0/?load=package.map&lang=ru-RU", "js/llplugins/Yandex.js"],
+			  init: function() {return new L.Yandex("satellite"); }
+		  },
+		  bing: { name: "Bing", js: ["js/llplugins/Bing.js"],
+			  init: function() {return new L.BingLayer("Anqm0F_JjIZvT0P3abS6KONpaBaKuTnITRrnYuiJCE0WOhH6ZbE4DzeT6brvKVR5");}
+		  }
+  };
+
+  var yandex = new L.DeferredLayer(layerdefs.ysat);
+  var google = new L.DeferredLayer(layerdefs.gsat);
+  var bing = new L.DeferredLayer(layerdefs.bing);
+  
+  hell.lswtcher = new L.Control.Layers({'OSM':mapnik, 'Google': google, 'Yandex': yandex, 'Bing': bing});
+  hell.map.addControl(hell.lswtcher);
+  
   
   var krymsk = new L.LatLng(44.9289, 37.9870);
   hell.map.setView(krymsk, 13).addLayer(mapnik);
@@ -283,12 +303,13 @@ MarkerIcon = L.Icon.Default.extend({
 hell.askPoint = function() {
   $('#map').css('cursor', 'crosshair');
   hell.map.on('click', hell.putPoint);
-}
+};
+
 hell.putPoint = function(e) {
   $('#map').css('cursor', 'auto');
   hell.map.off('click', hell.putPoint);
   alert(e.latlng.lat);
-}
+};
 
 // natural order sorting
 function alphanum(a, b) {
