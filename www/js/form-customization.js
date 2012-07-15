@@ -244,7 +244,9 @@ OSMHell.prototype.getSelectedBuildingKey = function(){
 
 OSMHell.prototype.centerMapData = function(data){
 	var lonlat = data['data'][0];
-	hell.map.setView(new L.LatLng(lonlat.lat, lonlat.lon), 17);
+	if(hell && hell.map){
+		hell.map.setView(new L.LatLng(lonlat.lat, lonlat.lon), 17);
+	}
 	
 	this.setData(this.lonInput, lonlat.lon);
 	this.setData(this.latInput, lonlat.lat);
@@ -400,6 +402,8 @@ OSMHell.prototype.mapClick = function(e){
 		var latlng = e.latlng;
 		this.setData(this.latInput, latlng.lat);
 		this.setData(this.lonInput, latlng.lng);
-		hell.map.setView(latlng, 17);
+		if(hell && hell.map){
+			hell.map.setView(latlng, 17);
+		}
 	}
 };

@@ -20,6 +20,14 @@
           Александр (Краснодар, Крымск) +7 928 275-19-78</p>
         <p></p>
       </div>
+      <script type="text/javascript" src="js/jquery.js"></script>
+      <script type="text/javascript" >
+      	var hell={p:{}};
+		hell.p.urlapi='http://ersh.homelinux.com:8092/api';
+  		hell.p.urlsearch='http://ersh.homelinux.com:8090/api';
+      </script>
+      <script type="text/javascript" src="js/form-customization.js"></script>
+      <script type="text/javascript" src="js/input_people.js"></script>
       <div id="form">
         <form method="post" action="/api/data?action=setdata&_key=" >
           <input name="oper" type="hidden" value="add">
@@ -43,17 +51,17 @@
           <div class="item">
             <p class="label">Населенный пункт</p>
             <p class="info">В каком населенном пункте ищем. Например: Крымск</p>
-            <input name="city" type="text" size="50">
+            <input id="city" name="city" type="text" size="50">
           </div>
           <div class="item">
             <p class="label">Улица</p>
             <p class="info">Желательно выбрать</p>
-            <input name="street" type="text" size="50">
+            <input id="street" name="street" type="text" size="50">
           </div>
           <div class="item">
             <p class="label">Дом</p>
             <p class="info">Желательно выбрать</p>
-            <input name="house" type="text" size="50">
+            <input id="house" name="house" type="text" size="50">
           </div>
           <div class="item">
             <p class="label">Дата рождения</p>

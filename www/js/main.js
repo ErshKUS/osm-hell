@@ -254,12 +254,13 @@ MarkerIcon = L.Icon.Default.extend({
 hell.askPoint = function() {
   $('#map').css('cursor', 'crosshair');
   hell.map.on('click', hell.putPoint);
-}
+};
+
 hell.putPoint = function(e) {
   $('#map').css('cursor', 'auto');
   hell.map.off('click', hell.putPoint);
   alert(e.latlng.lat);
-}
+};
 
 // natural order sorting
 function alphanum(a, b) {
