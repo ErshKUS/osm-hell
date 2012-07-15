@@ -21,8 +21,9 @@
         <p></p>
       </div>
       <div id="form">
-        <form method="post" action="/api/data?action=setdata" >
+        <form method="post" action="/api/data?action=setdata&_key=" >
           <input name="oper" type="hidden" value="add">
+          <input name="_redirect" type="hidden" value="viewpage">
           <div class="item">
             <p class="label">Имя разыскиваемого человека</p>
             <p class="info">Ф.И.О. (также указать девичью фамилию или Ф.И.О. до изменения в ЗАГС)</p>

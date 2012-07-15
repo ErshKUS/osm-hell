@@ -37,7 +37,7 @@ $(function(){
   );
 
   if (location.href.search("map.php")>0) {
-    updateMarkers(); //load markers from server
+    //updateMarkers(); //load markers from server
     return;
   }
 
@@ -124,7 +124,7 @@ hell.inittab = function(){
       viewrecords: true,
       modal: false,
       jsonReader: { repeatitems: false },
-      editurl: hell.p.urlapi+'/data?action=setdata&key='+hell.p.key,
+      editurl: hell.p.urlapi+'/data?action=setdata&_key='+hell.p.key,
       sortorder: "desc",
       beforeSelectRow: function(rowid) {
         var marker = hell.map.allmarkers[$('#tabt').jqGrid('getRowData',rowid).id];
@@ -146,7 +146,7 @@ hell.inittab = function(){
         for(var i=0;i<data.length;i++) {
           // каждую точку сложить в одно сообщение
           var point = data[i];
-          if (!point.lat || !point.lon)
+          if (!parseFloat(point.lat) || !parseFloat(point.lon))
             continue;
           var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
           var popupText = $.tmpl(hell.popuptempl, point).html();
@@ -182,10 +182,11 @@ hell.inittab = function(){
           message +=json.error;
         }
         $(this).jqGrid('setGridParam', {datatype:'json'});
-        updateMarkers();
+        //updateMarkers();
         return [success,message];
       },
       afterShowForm : function (formid) {
+        $('div.ui-widget-overlay').zIndex('99');
     	  window.osmhell.hideOverlay();
     	  window.osmhell.attachMap(hell.map);
     	  window.osmhell.connectToForm(formid);        
@@ -214,10 +215,11 @@ hell.inittab = function(){
         }
         var new_id = "1";
         $(this).jqGrid('setGridParam', {datatype:'json'});
-        updateMarkers();
+        //updateMarkers();
         return [success,message,new_id];
       },
       afterShowForm : function (formid) {
+        $('div.ui-widget-overlay').zIndex('99');
     	  window.osmhell.hideOverlay();
     	  window.osmhell.attachMap(hell.map);
     	  window.osmhell.connectToForm(formid);        
@@ -269,7 +271,7 @@ updateMarkers = function() {
   }).fail(function (jqXHR, textStatus) {
     alert("Произошла ошибка при чтении карты");
   });
-  setTimeout(updateMarkers, 300000);// reload every 5 minutes
+  //setTimeout(updateMarkers, 300000);// reload every 5 minutes
 };
 
 MarkerIcon = L.Icon.Default.extend({

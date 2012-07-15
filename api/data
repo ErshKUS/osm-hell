@@ -19,6 +19,8 @@ rowsFloat=['lat','lon']
 rowsKey=['id']
 rowsAll=rowsKey+rows
 
+key='mhjhubb74nisd76dj2i138826hir7I78fhdf8s'
+
 output={}
 
 def getdata():
@@ -71,15 +73,18 @@ def getdata():
     ORDER BY
       """+order+"""
   ;""",getval)
-  data = {}
-  data['rows']=[]
+  data=[]
   for record in cur:
-    data['rows'].append(record)
-  print json.dumps(data)
+    data.append(record)
+  #print json.dumps(data)
+  output['rows']=data
+
 
 def setdata():
   getval={}
   getval['oper'] = getvalues.getfirst('oper','')
+  getval['_redirect'] = getvalues.getfirst('_redirect','')
+  getval['_key'] = getvalues.getfirst('_key','')
   for name in rowsAll:
     try:
       i=rowsInt.index(name)
@@ -100,7 +105,7 @@ def setdata():
         INSERT INTO hell_peopleseach(""" + ', '.join(rows) + """ )
           VALUES ( %(""" + ')s, %('.join(rows) + """)s );
       ;""", getval)
-    elif ( getval['oper'] == 'edit' ):
+    elif ( getval['oper'] == 'edit' and getval['_key']==key ):
       setcolumn = ''
       for name in rows:
         setcolumn = setcolumn + name + '=%(' + name + ')s, '
@@ -114,6 +119,9 @@ def setdata():
     conn.commit()
   except Exception, e:
     output['error'] = str(e)
+  if (getval['_redirect'] == 'viewpage'):
+    output['_redirect'] = '../'
+  output['deb']=getval
 
 def getpoint():
   getval={}
@@ -142,16 +150,21 @@ def getpoint():
   output['data']=data
 
 
+  
+
+  
+  
 
 #send = "Content-type: text/javascript;" # debug
 send = "Content-type: application/json;" # production
 send = send + " Charset=Utf-8\nAccess-Control-Allow-Origin: *\nAccess-Control-Request-Headers: X-Requested-With, X-Prototype-Version\nAccess-Control-Request-Method: GET\n"
-print send # production
+#print send # production
 
 conn = psycopg2.connect(host=db_config.site_host, database=db_config.site_database, user=db_config.site_user, password=db_config.site_password)
 
 getvalues=cgi.FieldStorage()
 output['action'] = getvalues.getfirst('action','')
+output['_redirect'] = ''
 if output['action'] == 'getdata':
   getdata()
 elif output['action'] == 'setdata':
@@ -159,8 +172,18 @@ elif output['action'] == 'setdata':
 elif output['action'] == 'getpoint':
   getpoint()
 else:
+  #print "Request-URI: index.php"
+  #print "Content-Location: index.php"
+  #print "Location: index.php"
   output['error']='wrong action'
 
-if (output['action'] <> 'getdata'):
+if (output['_redirect'] <> ''):
+  print "Request-URI: "+output['_redirect']
+  print "Content-Location: "+output['_redirect']
+  print "Location: "+output['_redirect']
+
+print send
+  
+#if (output['action'] <> 'getdata'):
   #if (output['type'] == 'callback'):
-  print json.dumps(output)
+print json.dumps(output)

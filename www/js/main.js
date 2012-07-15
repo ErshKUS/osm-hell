@@ -70,8 +70,8 @@ hell.inittab = function(){
         {name:'infovolunteer', index:'infovolunteer', width:55, editable:true},
         {name:'namevolunteer', index:'namevolunteer', width:55, editable:true},
         {name:'datechecking', index:'datechecking', width:55, editable:true},
-        {name:'lat', index:'lat', hidden:true, editable:true, hidden: true, hidden: true},
-        {name:'lon', index:'lon', hidden:true, editable:true, hidden: true, hidden: true}
+        {name:'lat', index:'lat', hidden:true, editable:true},
+        {name:'lon', index:'lon', hidden:true, editable:true}
      ],
       
       /*
@@ -128,7 +128,7 @@ hell.inittab = function(){
         for(var i=0;i<data.length;i++) {
           // каждую точку сложить в одно сообщение
           var point = data[i];
-          if (!point.lat || !point.lon)
+          if (!parseFloat(point.lat) || !parseFloat(point.lon))
             continue;
           var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
           var popupText = $.tmpl(hell.popuptempl, point).html();
