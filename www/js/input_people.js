@@ -18,13 +18,16 @@ $(function(){
   hell.map.addLayer(hell.map.markergroup);
   
   $('#map').css('cursor', 'crosshair');
-  hell.map.on('click', hell.putPoint);  
+  hell.map.on('click', hell.putPoint); 
+  window.osmhell.attachMap(hell.map);
+  
 });
 
 hell.putPoint = function(e) {
   hell.map.markergroup.clearLayers();
-  $("#form [name=lat]").val(e.latlng.lat);
-  $("#form [name=lon]").val(e.latlng.lng);
+  //Это сделает window.osmhell
+  //$("#form [name=lat]").val(e.latlng.lat);
+  //$("#form [name=lon]").val(e.latlng.lng);
   var marker = new L.Marker(new L.LatLng(e.latlng.lat, e.latlng.lng));
   hell.map.markergroup.addLayer(marker);
 };
