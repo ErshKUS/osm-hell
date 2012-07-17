@@ -256,6 +256,19 @@ hell.inittab = function(){
     }
   );
   
+  $("#tabt")
+    .navButtonAdd('#tabp',{
+      caption:"Распечатать выбранные", 
+      buttonicon:"ui-icon-print", 
+      onClickButton: function(){
+        a=1;
+        this.p.postData.filters='{"groupOp":"AND","rules":[{"field":"ticketstatus","op":"bn","data":"закрыта"}]}';
+        this.p.postData._search=true;
+        $(this).trigger("reloadGrid",[{page:1}]);
+      }, 
+      position:"last"
+    })
+  
   
 };
 

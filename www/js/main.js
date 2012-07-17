@@ -33,6 +33,37 @@ $(function(){
     function(){ $(this).addClass("ui-state-hover") },
     function(){ $(this).removeClass("ui-state-hover") }
   );
+  $("#tabptop td.ui-pg-button").click(
+    function(e){
+      if (this.textContent=="Все записи") { 
+        $("#tab .ui-search-toolbar input").val("");
+        $("#tabt").each(function(){ this.triggerToolbar() })
+      }
+      else if (this.textContent=="Погибшие") { 
+        $("#tab .ui-search-toolbar input").val("");
+        $("#tab .ui-search-toolbar [name=status]").val("погиб");
+        $("#tabt").each(function(){ this.triggerToolbar() })
+      }
+      else if (this.textContent=="Открытые заявки") { 
+        //$("#tab .ui-search-toolbar input").val("");
+        //$("#tab .ui-search-toolbar [name=status]").val("погиб");
+        $("#tabt").each(function(){ 
+          //this.triggerToolbar() 
+          f=1;
+          this.p.postData.filters='{"groupOp":"AND","rules":[{"field":"ticketstatus","op":"bn","data":"закрыта"}]}';
+          this.p.postData._search=true;
+          this.p.search = true;
+          $(this).trigger("reloadGrid",[{page:1}]);
+          
+        })
+      }
+      else if (this.textContent=="Закрытые заявки") { 
+        $("#tab .ui-search-toolbar input").val("");
+        $("#tab .ui-search-toolbar [name=ticketstatus]").val("закрыта");
+        $("#tabt").each(function(){ this.triggerToolbar() })
+      }
+    }
+  );
 });
 
 onresize = function() {
@@ -51,31 +82,31 @@ hell.inittab = function(){
       
       
 
-      colNames:['','id','Временной шамп','Город','Улица','Дом','Имя человека','Дата рождения','Возраст','Что известно','Подробности о человеке','Источник информации','Кто разыскивает','Способы связи с ищущим','Биографические данные, персональные данные и связи', 'Медицинские сведения', 'Антропометрические сведения', 'Психологические и поведенческие особенности', 'Статус заявки', 'Информация от модераторов списка', 'Информация от волонтеров с места', 'Кто проверял, телефон', 'Дата проверки','lat','lon'],
+      colNames:['','id','Город','Улица','Дом','Имя человека','Дата рождения','Возраст','Что известно','Подробности о человеке','Источник информации','Кто разыскивает','Способы связи с ищущим','Биографические данные, персональные данные и связи', 'Медицинские сведения', 'Антропометрические сведения', 'Психологические и поведенческие особенности', 'Статус заявки', 'Информация от модераторов списка', 'Информация от волонтеров с места', 'Кто проверял, телефон', 'Дата проверки','Временной шамп','lat','lon'],
       colModel:[
         {name:'check', index:'check', width:15, editable:false, search:true, edittype:'checkbox', editoptions:{value:"True:False"}, formatter:"checkbox", formatoptions:{disabled:false}},      
         {name:'id', index:'id', hidden:true, key:true, hidden: true},
-        {name:'timestamp', index:'timestamp', width:30, editable:true},
-        {name:'city', index:'city', width:25, editable:true},
-        {name:'street', index:'street', width:50, editable:true},
-        {name:'house', index:'house', width:15, editable:true},
-        {name:'nameperson', index:'nameperson', width:60, editable:true},
-        {name:'dob', index:'dob', width:40, editable:true},
-        {name:'age', index:'age', width:55, editable:true},
-        {name:'status', index:'status', width:55, editable:true},
-        {name:'details', index:'details', width:55, editable:true},
-        {name:'source', index:'source', width:55, editable:true},
-        {name:'sourceperson', index:'sourceperson', width:55, editable:true},
-        {name:'sourcecontact', index:'sourcecontact', width:55, editable:true},
-        {name:'relationship', index:'relationship', width:55, editable:true},
-        {name:'medicalinfo', index:'medicalinfo', width:55, editable:true},
-        {name:'anthropometric', index:'anthropometric', width:55, editable:true},
-        {name:'psychological', index:'psychological', width:55, editable:true},
-        {name:'ticketstatus', index:'ticketstatus', width:55, editable:true},
-        {name:'infomoderators', index:'infomoderators', width:55, editable:true},
-        {name:'infovolunteer', index:'infovolunteer', width:55, editable:true},
-        {name:'namevolunteer', index:'namevolunteer', width:55, editable:true},
+        {name:'city', index:'city', width:50, editable:true},
+        {name:'street', index:'street', width:70, editable:true},
+        {name:'house', index:'house', width:25, editable:true},
+        {name:'nameperson', index:'nameperson', width:150, editable:true},
+        {name:'dob', index:'dob', width:60, editable:true},
+        {name:'age', index:'age', width:50, editable:true},
+        {name:'status', index:'status', width:70, editable:true},
+        {name:'details', index:'details', width:150, editable:true},
+        {name:'source', index:'source', width:90, editable:true},
+        {name:'sourceperson', index:'sourceperson', width:200, editable:true},
+        {name:'sourcecontact', index:'sourcecontact', width:200, editable:true},
+        {name:'relationship', index:'relationship', width:200, editable:true},
+        {name:'medicalinfo', index:'medicalinfo', width:200, editable:true},
+        {name:'anthropometric', index:'anthropometric', width:200, editable:true},
+        {name:'psychological', index:'psychological', width:200, editable:true},
+        {name:'ticketstatus', index:'ticketstatus', width:70, editable:true},
+        {name:'infomoderators', index:'infomoderators', width:150, editable:true},
+        {name:'infovolunteer', index:'infovolunteer', width:150, editable:true},
+        {name:'namevolunteer', index:'namevolunteer', width:100, editable:true},
         {name:'datechecking', index:'datechecking', width:55, editable:true},
+        {name:'timestamp', index:'timestamp', hidden:true, width:30, editable:true},
         {name:'lat', index:'lat', hidden:true, editable:true},
         {name:'lon', index:'lon', hidden:true, editable:true}
      ],
@@ -110,6 +141,7 @@ hell.inittab = function(){
 //      pginput: false,
       height: 250,
       viewrecords: true,
+      shrinkToFit: false,
       modal: false,
       loadonce: true,
       jsonReader: { repeatitems: false },
@@ -160,8 +192,8 @@ hell.inittab = function(){
   $("#tabt").jqGrid('filterToolbar',{searchOnEnter:false});
 
   $("#tabt")
-    .navGrid('#tabp',{edit:false,add:false,del:false,search:true,refresh:false})
-    .navButtonAdd('#tabp',{
+    .navGrid('#tabp',{edit:false,add:false,del:false,search:false,refresh:false})
+  /*  .navButtonAdd('#tabp',{
       caption:"Распечатать выбранные", 
       buttonicon:"ui-icon-print", 
       onClickButton: function(){
@@ -176,7 +208,9 @@ hell.inittab = function(){
         
       }, 
       position:"last"
-    });
+    });*/
+  
+ // jQuery("#tabt").jqGrid('searchGrid', {multipleSearch:true} );
   
 /* 
   $("#tabt").jqGrid('navGrid','#tabp',

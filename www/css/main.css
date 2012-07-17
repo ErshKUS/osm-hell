@@ -47,7 +47,11 @@ table {
 }
 
 .ui-jqdialog-content .CaptionTD {
-  white-space: normal !important;;
+  white-space: normal !important;
 }
 
 td {vertical-align: top;}
+
+.ui-jqgrid tr.jqgrow td {
+  white-space: normal !important;
+}

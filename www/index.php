@@ -28,8 +28,10 @@
       <div id="tabptop" class="ui-jqgrid">
         <div class="ui-state-default ui-jqgrid-pager ui-corner-bottom">
           <table class="ui-pg-table navtable"><tr>
-            <td class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-document-b"></span>Фильтр 1</td>
-            <td class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-document-b"></span>Фильтр 2</td>
+            <td class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-document-b"></span>Все записи</td>
+            <td class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-document-b"></span>Погибшие</td>
+            <td class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-document-b"></span>Открытые заявки</td>
+            <td class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-document-b"></span>Закрытые заявки</td>
           <tr></table>
         </div>
       </div>
