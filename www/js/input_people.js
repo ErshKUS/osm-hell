@@ -6,6 +6,36 @@ $(function(){
 		$('#house').after('<div><select id="bldng_chouse"></select></div>');
 	};
 	
+	OSMHell.prototype.centerMapData = function(data){
+		var lonlat = data['data'][0];
+		if(hell && hell.map){
+			hell.map.setView(new L.LatLng(lonlat.lat, lonlat.lon), 17);
+			
+			hell.map.markergroup.clearLayers();
+			var marker = new L.Marker(new L.LatLng(lonlat.lat, lonlat.lon));
+			hell.map.markergroup.addLayer(marker);
+		}
+		
+		this.setData(this.lonInput, lonlat.lon);
+		this.setData(this.latInput, lonlat.lat);
+	};
+	
+	OSMHell.prototype.mapClick = function(e){
+		if(this.formActive){
+			var latlng = e.latlng;
+			this.setData(this.latInput, latlng.lat);
+			this.setData(this.lonInput, latlng.lng);
+			if(hell && hell.map){
+				hell.map.setView(latlng, 17);
+				
+				hell.map.markergroup.clearLayers();
+				var marker = new L.Marker(latlng);
+				hell.map.markergroup.addLayer(marker);
+			}
+		}
+	};
+	
+	
 	window.osmhell = new OSMHell();
 	window.osmhell.loadCityes();
 	window.osmhell.connectToForm(window.document.forms[0]);
@@ -18,19 +48,10 @@ $(function(){
   hell.map.addLayer(hell.map.markergroup);
   
   $('#map').css('cursor', 'crosshair');
-  hell.map.on('click', hell.putPoint); 
+  
   window.osmhell.attachMap(hell.map);
   
 });
-
-hell.putPoint = function(e) {
-  hell.map.markergroup.clearLayers();
-  //Это сделает window.osmhell
-  //$("#form [name=lat]").val(e.latlng.lat);
-  //$("#form [name=lon]").val(e.latlng.lng);
-  var marker = new L.Marker(new L.LatLng(e.latlng.lat, e.latlng.lng));
-  hell.map.markergroup.addLayer(marker);
-};
 
 //natural order sorting
 function alphanum(a, b) {
