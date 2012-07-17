@@ -43,29 +43,33 @@
             <p class="label">Что Вам достоверно известно о человеке</p>
             <p class="info">Выберите вариант</p>
             <ul class="choices">
-              <li class="choice-item"><input name="status" type="radio" class="radio" value="Живы">Живы
-              <li class="choice-item"><input name="status" type="radio" class="radio" value="Живы, но утрачена связь">Живы, но утрачена связь
-              <li class="choice-item"><input name="status" type="radio" class="radio" value="Пропали без вести">Пропали без вести
-              <li class="choice-item"><input name="status" type="radio" class="radio" value="Погибли">Погибли
-              <li class="choice-item"><input name="status" type="radio" class="radio" value="Ничего не известно">Ничего не известно
-            <ul>
+              <li class="choice-item"><input name="status" type="radio" class="radio" value="Живы">Живы</li>
+              <li class="choice-item"><input name="status" type="radio" class="radio" value="Живы, но утрачена связь">Живы, но утрачена связь</li>
+              <li class="choice-item"><input name="status" type="radio" class="radio" value="Пропали без вести">Пропали без вести</li>
+              <li class="choice-item"><input name="status" type="radio" class="radio" value="Погибли">Погибли</li>
+              <li class="choice-item"><input name="status" type="radio" class="radio" value="Ничего не известно">Ничего не известно</li>
+            </ul>
           </div>
           <div class="item" style="position: relative;">
             <div id="inmap"><div id="map"></div></div>
             <p class="label">Населенный пункт</p>
             <p class="info">В каком населенном пункте ищем. Например: Крымск</p>
-            <input id="city" name="city" type="text" size="30">
+            <input id="city" name="city" type="text" size="15">
           </div>
           <div class="item">
             <p class="label">Улица</p>
             <p class="info">Желательно выбрать</p>
-            <input id="street" name="street" type="text" size="30">
+            <input id="street" name="street" type="text" size="15">
           </div>
           <div class="item">
             <p class="label">Дом</p>
             <p class="info">Желательно выбрать</p>
-            <input id="house" name="house" type="text" size="30">
+            <input id="house" name="house" type="text" size="15">
           </div>
+		  
+		  <input id="lon" name="house" type="hidden">
+          <input id="lat" name="house" type="hidden">
+          
           <div class="item">
             <p class="label">Дата рождения</p>
             <p class="info">формат дд.мм.гггг</p>
@@ -119,8 +123,6 @@
           <div class="submit">
             <input name="submit" type="submit" value="Отправить">
           </div>
-          
-
         </form>
       </div>
     </div>
