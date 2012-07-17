@@ -4,8 +4,8 @@
   <title>osm-hell</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <link rel="stylesheet" href="css/leaflet.css" />
-  <script src="js/leaflet.js"></script>
   <!--[if lte IE 8]><link rel="stylesheet" href="css/leaflet.ie.css" /><![endif]-->    
+  <script type="text/javascript" src="js/leaflet.js"></script>
   <link type="text/css" href="css/main.css" rel="stylesheet" />
   <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
   <link type="text/css" href="css/ui.jqgrid.css" rel="stylesheet" />

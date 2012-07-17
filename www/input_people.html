@@ -3,6 +3,14 @@
     <title>Поиск людей в Крымске и Крымском районе Краснодарского края - osm-hell</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <link type="text/css" href="css/input_people.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/leaflet.css" />
+    <!--[if lte IE 8]><link rel="stylesheet" href="css/leaflet.ie.css" /><![endif]-->    
+    <script type="text/javascript" src="js/leaflet.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/conf.js"></script>
+    <script type="text/javascript" src="js/form-customization.js"></script>
+    <script type="text/javascript" src="js/input_people.js"></script>
+    
   </head>
   <body>
     <div id="body">
@@ -20,18 +28,12 @@
           Александр (Краснодар, Крымск) +7 928 275-19-78</p>
         <p></p>
       </div>
-      <script type="text/javascript" src="js/jquery.js"></script>
-      <script type="text/javascript" >
-      	var hell={p:{}};
-		hell.p.urlapi='http://ersh.homelinux.com:8092/api';
-  		hell.p.urlsearch='http://ersh.homelinux.com:8090/api';
-      </script>
-      <script type="text/javascript" src="js/form-customization.js"></script>
-      <script type="text/javascript" src="js/input_people.js"></script>
       <div id="form">
         <form method="post" action="/api/data?action=setdata&_key=" >
           <input name="oper" type="hidden" value="add">
           <input name="_redirect" type="hidden" value="viewpage">
+          <input name="lat" type="hidden" value="0">
+          <input name="lon" type="hidden" value="0">
           <div class="item">
             <p class="label">Имя разыскиваемого человека</p>
             <p class="info">Ф.И.О. (также указать девичью фамилию или Ф.И.О. до изменения в ЗАГС)</p>
@@ -48,20 +50,21 @@
               <li class="choice-item"><input name="status" type="radio" class="radio" value="Ничего не известно">Ничего не известно
             <ul>
           </div>
-          <div class="item">
+          <div class="item" style="position: relative;">
+            <div id="inmap"><div id="map"></div></div>
             <p class="label">Населенный пункт</p>
             <p class="info">В каком населенном пункте ищем. Например: Крымск</p>
-            <input id="city" name="city" type="text" size="50">
+            <input id="city" name="city" type="text" size="30">
           </div>
           <div class="item">
             <p class="label">Улица</p>
             <p class="info">Желательно выбрать</p>
-            <input id="street" name="street" type="text" size="50">
+            <input id="street" name="street" type="text" size="30">
           </div>
           <div class="item">
             <p class="label">Дом</p>
             <p class="info">Желательно выбрать</p>
-            <input id="house" name="house" type="text" size="50">
+            <input id="house" name="house" type="text" size="30">
           </div>
           <div class="item">
             <p class="label">Дата рождения</p>

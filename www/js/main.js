@@ -35,30 +35,23 @@ $(function(){
   );
   $("#tabptop td.ui-pg-button").click(
     function(e){
+      $("#tab .ui-search-toolbar input").val("");
       if (this.textContent=="Все записи") { 
-        $("#tab .ui-search-toolbar input").val("");
         $("#tabt").each(function(){ this.triggerToolbar() })
       }
       else if (this.textContent=="Погибшие") { 
-        $("#tab .ui-search-toolbar input").val("");
-        $("#tab .ui-search-toolbar [name=status]").val("погиб");
+       $("#tab .ui-search-toolbar [name=status]").val("погиб");
         $("#tabt").each(function(){ this.triggerToolbar() })
       }
       else if (this.textContent=="Открытые заявки") { 
-        //$("#tab .ui-search-toolbar input").val("");
-        //$("#tab .ui-search-toolbar [name=status]").val("погиб");
         $("#tabt").each(function(){ 
-          //this.triggerToolbar() 
-          f=1;
           this.p.postData.filters='{"groupOp":"AND","rules":[{"field":"ticketstatus","op":"bn","data":"закрыта"}]}';
           this.p.postData._search=true;
           this.p.search = true;
           $(this).trigger("reloadGrid",[{page:1}]);
-          
         })
       }
       else if (this.textContent=="Закрытые заявки") { 
-        $("#tab .ui-search-toolbar input").val("");
         $("#tab .ui-search-toolbar [name=ticketstatus]").val("закрыта");
         $("#tabt").each(function(){ this.triggerToolbar() })
       }
@@ -78,8 +71,6 @@ hell.inittab = function(){
       url: hell.p.urlapi+'/data?action=getdata',
       datatype: "json",
       mtype: "POST",
-      
-      
       
 
       colNames:['','id','Город','Улица','Дом','Имя человека','Дата рождения','Возраст','Что известно','Подробности о человеке','Источник информации','Кто разыскивает','Способы связи с ищущим','Биографические данные, персональные данные и связи', 'Медицинские сведения', 'Антропометрические сведения', 'Психологические и поведенческие особенности', 'Статус заявки', 'Информация от модераторов списка', 'Информация от волонтеров с места', 'Кто проверял, телефон', 'Дата проверки','Временной шамп','lat','lon'],
@@ -152,7 +143,8 @@ hell.inittab = function(){
           $("#tabt").jqGrid().setRowData(
             $(this).closest('tr').attr('id'),
             {check:this.checked}
-          )
+          );
+          hell.updateMarkers();
         })
       },      
       beforeSelectRow: function(rowid) {
@@ -170,23 +162,7 @@ hell.inittab = function(){
         onresize();
       },
       gridComplete: function() {
-        var data = $('#tabt').getRowData();
-        hell.map.markergroup.clearLayers();
-        for(var i=0;i<data.length;i++) {
-          // каждую точку сложить в одно сообщение
-          var point = data[i];
-          if (!parseFloat(point.lat) || !parseFloat(point.lon))
-            continue;
-          var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
-          var popupText = $.tmpl(hell.popuptempl, point).html();
-          marker.bindPopup(popupText);
-          var icon = hell.map.mcolors[point.status];
-          if (icon)
-            marker.setIcon(icon);
-          hell.map.markergroup.addLayer(marker);
-          hell.map.allmarkers[point.id] = marker;
-          marker._json = point;
-        }
+        hell.updateMarkers();
       }
   });
   $("#tabt").jqGrid('filterToolbar',{searchOnEnter:false});
@@ -271,6 +247,31 @@ hell.inittab = function(){
   
 };
 
+hell.updateMarkers = function() {
+  var data = $('#tabt').getRowData();
+  var check = false;
+  hell.map.markergroup.clearLayers();
+  for(var i=0;i<data.length;i++) {if (data[i].check == "True") check=true}
+  for(var i=0;i<data.length;i++) {
+    // каждую точку сложить в одно сообщение
+    var point = data[i];
+    if (!parseFloat(point.lat) || !parseFloat(point.lon))
+      continue;
+    if (check && !(point.check == "True"))
+      continue;
+    var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
+    var popupText = $.tmpl(hell.popuptempl, point).html();
+    marker.bindPopup(popupText);
+    var icon = hell.map.mcolors[point.status];
+    if (icon)
+      marker.setIcon(icon);
+    hell.map.markergroup.addLayer(marker);
+    hell.map.allmarkers[point.id] = marker;
+    marker._json = point;
+  }
+}
+
+/*
 updateMarkers = function() {
   //var bnds = map.getBounds();
   bnds = new L.LatLngBounds(new L.LatLng(44.57,36.72), new L.LatLng(45.30, 39.04));
@@ -309,7 +310,7 @@ updateMarkers = function() {
     alert("Произошла ошибка при чтении карты");
   });
   setTimeout(updateMarkers, 300000);// reload every 5 minutes
-};
+};*/
 
 MarkerIcon = L.Icon.Default.extend({
   createIcon: function() {

@@ -9,7 +9,25 @@ $(function(){
 	window.osmhell = new OSMHell();
 	window.osmhell.loadCityes();
 	window.osmhell.connectToForm(window.document.forms[0]);
+  
+  hell.map = new L.Map('map');
+  var mapnik = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: "Map data &copy; <a href='http://osm.org'>OpenStreetMap</a> contributors"});
+  var krymsk = new L.LatLng(44.9289, 37.9870);
+  hell.map.setView(krymsk, 13).addLayer(mapnik);
+  hell.map.markergroup = new L.LayerGroup();
+  hell.map.addLayer(hell.map.markergroup);
+  
+  $('#map').css('cursor', 'crosshair');
+  hell.map.on('click', hell.putPoint);  
 });
+
+hell.putPoint = function(e) {
+  hell.map.markergroup.clearLayers();
+  $("#form [name=lat]").val(e.latlng.lat);
+  $("#form [name=lon]").val(e.latlng.lng);
+  var marker = new L.Marker(new L.LatLng(e.latlng.lat, e.latlng.lng));
+  hell.map.markergroup.addLayer(marker);
+};
 
 //natural order sorting
 function alphanum(a, b) {

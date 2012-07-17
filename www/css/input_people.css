@@ -33,6 +33,7 @@ div#body{
 
 div#form {
   margin-top: 3em;
+  position: relative;
 }
 
 .item {
@@ -59,4 +60,14 @@ li.choice-item {
 input.radio {
     margin-left: 0.4em;
     margin-right: 0.3em;
+}
+
+#map {
+  height: 18.4em;
+  width: 27.7em;
+}
+#inmap {
+  left: 17em;
+  position: absolute;
+  top: 2.8em;
 }
