@@ -11,15 +11,12 @@ OSMHell = function OSMHell(){
 	this.coordsCache = {};
 };
 
-
 OSMHell.prototype.loadCityes = function(json){
-	$.ajax(OSMHell.API_URL, {
-		data: {'action':'addrselect', 'get' : 'city'},
-    crossDomain: true,
-		context : window.osmhell
-	}).done(function ( data ) {
-		this.applyCityes($.parseJSON(data));
-	});
+	loadData({'action':'addrselect', 'get' : 'city'}, window.osmhell, this.loadCityesCallback);
+};
+
+OSMHell.prototype.loadCityesCallback = function ( data ) {
+	this.applyCityes($.parseJSON(data));
 };
 
 OSMHell.prototype.applyCityes = function(json){
@@ -75,13 +72,8 @@ OSMHell.prototype.refreshStreetsData = function(doneCallback, context){
 	
 	if(!this.cities[this.selectedCity].loaded){
 		var cityClosure = this.selectedCity;
-		$.ajax(OSMHell.API_URL, {
-			data: {'action':'addrselect', 'get' : 'street', 'city' : this.selectedCity},
-			context : window.osmhell
-		}).done(function ( data ) {
-			this.applyStreets($.parseJSON(data), cityClosure);
-			this.refreshStreetsView();
-			
+		loadData({'action':'addrselect', 'get' : 'street', 'city' : this.selectedCity}, window.osmhell, function(data){
+			this.refreshStreetsDataCallback(data, cityClosure);
 			if(doneCallback){
 				doneCallback.apply(context, []);
 			}
@@ -94,7 +86,11 @@ OSMHell.prototype.refreshStreetsData = function(doneCallback, context){
 		}
 	}
 	
-	
+};
+
+OSMHell.prototype.refreshStreetsDataCallback = function (data, city) {
+	this.applyStreets($.parseJSON(data), city);
+	this.refreshStreetsView();
 };
 
 OSMHell.prototype.applyStreets = function(json, city){
@@ -150,19 +146,16 @@ OSMHell.prototype.streetChange = function(){
 OSMHell.prototype.refreshBuildingsData = function(doneCallback, contex){
 	
 	if(!this.cities[this.selectedCity].streets[this.selectedStreet].loaded){
+		
 		var cityClosure = this.selectedCity;
 		var streetClosure = this.selectedStreet;
-		$.ajax(OSMHell.API_URL, {
-			data: {'action':'addrselect', 'get' : 'house', 'city' : this.selectedCity, 'street' : this.selectedStreet},
-			context : window.osmhell
-		}).done(function ( data ) {
-			this.applyBuildings($.parseJSON(data), cityClosure, streetClosure);
-			this.refreshBuildingsView();
-			
+		loadData({'action':'addrselect', 'get' : 'house', 'city' : this.selectedCity, 'street' : this.selectedStreet}, window.osmhell, function(data){
+			this.refreshBuildingsDataCallback(data, cityClosure, streetClosure);
 			if(doneCallback){
 				doneCallback.apply(contex, []);
 			}
 		});
+		
 	} else {
 		this.refreshBuildingsView();
 		
@@ -170,7 +163,11 @@ OSMHell.prototype.refreshBuildingsData = function(doneCallback, contex){
 			doneCallback.apply(contex, []);
 		}
 	}
-	
+};
+
+OSMHell.prototype.refreshBuildingsDataCallback = function(data, city, street){
+	this.applyBuildings($.parseJSON(data), city, street);
+	this.refreshBuildingsView();
 };
 
 OSMHell.prototype.applyBuildings = function(json, city, street){
@@ -185,12 +182,10 @@ OSMHell.prototype.applyBuildings = function(json, city, street){
 };
 
 OSMHell.prototype.addBuilding = function(name, city, street){
-	
 	if(this.cities[city] && this.cities[city].streets[street]){
 		//По-хорошему надо проверять что такого адреса еще нет
 		this.cities[city].streets[street].buildings.push(name);
 	}
-	
 };
 
 OSMHell.prototype.refreshBuildingsView = function(){
@@ -231,13 +226,17 @@ OSMHell.prototype.loadBuildingCenter = function(){
 	$.ajax(OSMHell.API_URL, {
 		data: {'action':'centroid', 'get' : 'house', 'city' : this.selectedCity, 'street' : this.selectedStreet, 'house' : this.selectedBuilding},
 		context : window.osmhell
-	}).done(function ( data ) {
-		var lonLat = $.parseJSON(data);
-		var bk = this.getSelectedBuildingKey();
-		this.coordsCache[bk] = lonLat;
-		this.centerMapData(this.coordsCache[bk]);
-	});
+	}).done(this.loadBuildingCenterCallback);
 };
+
+OSMHell.prototype.loadBuildingCenterCallback = function(data){
+	var lonLat = $.parseJSON(data);
+	var bk = this.getSelectedBuildingKey();
+	this.coordsCache[bk] = lonLat;
+	this.centerMapData(this.coordsCache[bk]);
+};
+
+
 
 OSMHell.prototype.getSelectedBuildingKey = function(){
 	return this.selectedCity + this.selectedStreet + this.selectedBuilding;
@@ -393,9 +392,11 @@ OSMHell.prototype.hideOverlay = function(){
 
 OSMHell.prototype.attachMap = function(map){
 	var thisClosure = this;
-	map.on('click', function(e){
-		thisClosure.mapClick.apply(thisClosure, [e]);
-	});
+	if(map){
+		map.on('click', function(e){
+			thisClosure.mapClick.apply(thisClosure, [e]);
+		});
+	}
 };
 
 OSMHell.prototype.mapClick = function(e){
@@ -407,4 +408,34 @@ OSMHell.prototype.mapClick = function(e){
 			hell.map.setView(latlng, 17);
 		}
 	}
+};
+
+function loadData(params, context, cb){
+//	$.ajax(OSMHell.API_URL, {
+//		data: params,
+//		'context' : context
+//	}).done(cb);
+	
+	jsonp.fetch(OSMHell.API_URL + '?' + jQuery.param(params) + '&' + '&callback=JSONPCallback', function(answer){cb.apply(context, [answer]);});
+}
+
+var jsonp = {
+    callbackCounter: 0,
+
+    fetch: function(url, callback) {
+        var fn = 'JSONPCallback_' + this.callbackCounter++;
+        window[fn] = this.evalJSONP(callback);
+        url = url.replace('=JSONPCallback', '=' + fn);
+
+        var scriptTag = document.createElement('SCRIPT');
+        scriptTag.charset='utf8';
+        scriptTag.src = url;
+        document.getElementsByTagName('HEAD')[0].appendChild(scriptTag);
+    },
+
+    evalJSONP: function(callback) {
+        return function(data) {
+        	callback(data);
+        };
+    }
 };
