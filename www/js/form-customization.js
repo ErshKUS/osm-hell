@@ -163,7 +163,6 @@ OSMHell.prototype.refreshBuildingsData = function(doneCallback, contex){
 			doneCallback.apply(contex, []);
 		}
 	}
-	
 };
 
 OSMHell.prototype.refreshBuildingsDataCallback = function(data, city, street){
@@ -412,8 +411,31 @@ OSMHell.prototype.mapClick = function(e){
 };
 
 function loadData(params, context, cb){
-	$.ajax(OSMHell.API_URL, {
-		data: params,
-		'context' : context
-	}).done(cb);
+//	$.ajax(OSMHell.API_URL, {
+//		data: params,
+//		'context' : context
+//	}).done(cb);
+	
+	jsonp.fetch(OSMHell.API_URL + '?' + jQuery.param(params) + '&' + '&callback=JSONPCallback', function(answer){cb.apply(context, [answer]);});
 }
+
+var jsonp = {
+    callbackCounter: 0,
+
+    fetch: function(url, callback) {
+        var fn = 'JSONPCallback_' + this.callbackCounter++;
+        window[fn] = this.evalJSONP(callback);
+        url = url.replace('=JSONPCallback', '=' + fn);
+
+        var scriptTag = document.createElement('SCRIPT');
+        scriptTag.charset='utf8';
+        scriptTag.src = url;
+        document.getElementsByTagName('HEAD')[0].appendChild(scriptTag);
+    },
+
+    evalJSONP: function(callback) {
+        return function(data) {
+        	callback(data);
+        };
+    }
+};
