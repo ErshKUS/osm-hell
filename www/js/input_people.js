@@ -1,9 +1,9 @@
 $(function(){
 	
 	OSMHell.prototype.createFields = function(formid){
-		$('#city').after('<div><select id="city_chouse"></select></div>');
-		$('#street').after('<div><select id="street_chouse"></select></div>');
-		$('#house').after('<div><select id="bldng_chouse"></select></div>');
+		$('#city').after('<div><select id="city_chouse" style="width: 25ex;"></select></div>');
+		$('#street').after('<div><select id="street_chouse" style="width: 25ex;"></select></div>');
+		$('#house').after('<div><select id="bldng_chouse" style="width: 15ex;"></select></div>');
 	};
 	
 	OSMHell.prototype.centerMapData = function(data){

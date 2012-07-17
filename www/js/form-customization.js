@@ -15,6 +15,7 @@ OSMHell = function OSMHell(){
 OSMHell.prototype.loadCityes = function(json){
 	$.ajax(OSMHell.API_URL, {
 		data: {'action':'addrselect', 'get' : 'city'},
+    crossDomain: true,
 		context : window.osmhell
 	}).done(function ( data ) {
 		this.applyCityes($.parseJSON(data));
