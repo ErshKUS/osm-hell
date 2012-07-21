@@ -24,8 +24,17 @@
 </head>
 <body>
   <div style="height:100%;width:100%;">
-    <div>Отчеты об оказанной помощи присылайте редакторам таблицы. Тема письма "КРЫМСК":  potop0607@gmail.com / potop0707@gmail.com</div>
 	  <div id="tab">
+      <div id="tabptop" class="ui-jqgrid">
+        <div class="ui-state-default ui-jqgrid-pager ui-corner-bottom">
+          <table class="ui-pg-table navtable"><tr>
+            <td class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-document-b"></span>Все записи</td>
+            <td class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-document-b"></span>Погибшие</td>
+            <td class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-document-b"></span>Открытые заявки</td>
+            <td class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-document-b"></span>Закрытые заявки</td>
+          <tr></table>
+        </div>
+      </div>
 	    <table id="tabt"></table>
 	    <div id="tabp"></div>  
 	  </div>

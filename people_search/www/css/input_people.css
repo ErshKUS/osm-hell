@@ -1,0 +1,73 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body,html {
+  font-family: Arial,sans-serif;
+  font-size: 13px;
+  height:100%;
+  min-height:100%;
+}
+
+table {
+  border-spacing: 0;
+}
+
+body{
+  background-color: #E8EEF7;
+  padding: 0.5em 1em;
+}
+
+div#head p{
+  margin-top: 1em;
+}
+
+div#body{
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  margin: 0 auto;
+  padding: 1em;
+  width: 45em;
+}
+
+div#form {
+  margin-top: 3em;
+  position: relative;
+}
+
+.item {
+  margin-bottom: 1.5em;
+}
+
+.item .label {
+  font-weight: bold;
+}
+
+.item .info {
+  color: #666666;
+  margin: 0.1em 0 0.25em;
+}
+
+ul.choices {
+  list-style: none outside none;
+  margin: 0.5em 0 0;
+}
+li.choice-item {
+  line-height: 1.3em;
+  padding-bottom: 0.5em;
+}
+input.radio {
+    margin-left: 0.4em;
+    margin-right: 0.3em;
+}
+
+#map {
+  height: 18.4em;
+  width: 27.7em;
+}
+#inmap {
+  left: 16em;
+  position: absolute;
+  top: 2.8em;
+}

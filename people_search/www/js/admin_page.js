@@ -84,7 +84,7 @@ hell.inittab = function(){
       
       
       
-/*
+
       colNames:['id','Временной шамп','Город','Улица','Дом','Имя человека','Дата рождения','Возраст','Что известно','Подробности о человеке','Источник информации','Кто разыскивает','Способы связи с ищущим','Биографические данные, персональные данные и связи', 'Медицинские сведения', 'Антропометрические сведения', 'Психологические и поведенческие особенности', 'Статус заявки', 'Информация от модераторов списка', 'Информация от волонтеров с места', 'Кто проверял, телефон', 'Дата проверки','lat','lon'],
       colModel:[
         {name:'id', index:'id', hidden:true, key:true, hidden: true},
@@ -112,28 +112,25 @@ hell.inittab = function(){
         {name:'lat', index:'lat', hidden:true, editable:true, hidden: true, hidden: true},
         {name:'lon', index:'lon', hidden:true, editable:true, hidden: true, hidden: true}
      ],
-*/      
-          //  rows=['lat', 'lon', 'city', 'street', 'house', 'flat', 'contact', 'phone', 'required', 'info', 'condition_house', 'status', 'done']
-
-      colNames:['id','Город','Улица','Дом','Квартира','Состав семьи','Контактное лицо','Телефон','Требуется','Доп.информация','Состояние жилья','Статус','Сделано','lat','lon'],
+      
+      /*
+      colNames:['','Город','Улица','Дом','Квартира','Контактное лицо','Телефон','required','info','Состояние жилья','Статус','',''],
       colModel:[
         {name:'id', index:'id', hidden:true, key:true},
-        {name:'city', index:'city', width:70, editable:true},
-        {name:'street', index:'street', width:100, editable:true},
-        {name:'house', index:'house', width:38, editable:true},
-        {name:'flat', index:'flat', width:35, editable:true},
-        {name:'compositionfamily', index:'compositionfamily', width:150, editable:true},
-        {name:'contact', index:'contact', width:90, editable:true},
-        {name:'phone', index:'phone', width:70, editable:true},
-        {name:'required', index:'required', width:200, editable:true, edittype:'textarea'},
-        {name:'info', index:'info', width:200, editable:true, edittype:'textarea'},
-        {name:'condition_house', index:'condition_house', width:150, editable:true},
-        {name:'status', index:'status', width:45, editable:true,edittype:'select',formatter:'select',editoptions:{value:"1:Новая;2:В работе;3:Закрыта"}},
-        {name:'done', index:'done', width:200, edittype:'textarea', editable:true},
+        {name:'city', index:'city', width:25, editable:true},
+        {name:'street', index:'street', width:50, editable:true},
+        {name:'house', index:'house', width:15, editable:true},
+        {name:'flat', index:'flat', width:15, editable:true},
+        {name:'contact', index:'contact', width:60, editable:true},
+        {name:'phone', index:'phone', width:40, editable:true},
+        {name:'required', index:'required', width:55, editable:true},
+        {name:'info', index:'info', width:55, editable:true},
+        {name:'condition_house', index:'condition_house', width:55, editable:true},
+        {name:'status', index:'status', width:55, editable:true,edittype:'select',formatter:'select',editoptions:{value:"1:Новая;2:В работе;3:Закрыта"}},
         {name:'lat', index:'lat', hidden:true, editable:true},
         {name:'lon', index:'lon', hidden:true, editable:true}
      ],
-     
+     */
       rowNum:50000,
 //      width: 1250,
 //      rowList:[30,70],
@@ -142,7 +139,6 @@ hell.inittab = function(){
       sortname: 'id',
       viewsortcols: true,
       ignoreCase: true,
-      shrinkToFit: false,
 //      pgbuttons: false,
 //      pginput: false,
       height: 250,
@@ -174,8 +170,8 @@ hell.inittab = function(){
           if (!parseFloat(point.lat) || !parseFloat(point.lon))
             continue;
           var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
-          var popupText = $.tmpl(hell.popuptempl, point).html();
-          marker.bindPopup(popupText);
+          //var popupText = $.tmpl(hell.popuptempl, point).html();
+          //marker.bindPopup(popupText);
           //marker.rowid=point.id
           //marker.on('click',function(e){
           //  $("#tabt").jqGrid('setSelection',e.target.rowid);

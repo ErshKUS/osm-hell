@@ -12,20 +12,12 @@ import db_config
 #rowsInt=['id','status']
 #rowsFloat=['lat','lon']
 
-table='hell_addressaffected'
-rows=['lat', 'lon', 'city', 'street', 'house', 'flat', 'contact', 'phone', 'required', 'info', 'condition_house', 'status', 'done', 'compositionfamily']
-rowsInt=['id', 'status']
+rows=['lat','lon','nameperson', 'dob', 'age', 'city', 'street', 'house', 'source', 'sourceperson', 'status', 'details', 'sourcecontact', 'relationship',
+'anthropometric', 'psychological', 'medicalinfo', 'timestamp', 'ticketstatus', 'infomoderators', 'infovolunteer', 'namevolunteer', 'datechecking']
+rowsInt=['id']
 rowsFloat=['lat','lon']
 rowsKey=['id']
 rowsAll=rowsKey+rows
-
-#rows=['lat','lon','nameperson', 'dob', 'age', 'city', 'street', 'house', 'source', 'sourceperson', 'status', 'details', 'sourcecontact', 'relationship',
-#'anthropometric', 'psychological', 'medicalinfo', 'timestamp', 'ticketstatus', 'infomoderators', 'infovolunteer', 'namevolunteer', 'datechecking']
-#rowsInt=['id']
-#rowsFloat=['lat','lon']
-#rowsKey=['id']
-#rowsAll=rowsKey+rows
-
 
 key='mhjhubb74nisd76dj2i138826hir7I78fhdf8s'
 
@@ -75,7 +67,7 @@ def getdata():
   cur.execute("""
     SELECT *
     FROM
-      """+table+"""
+      hell_peopleseach
     WHERE
       """+where+"""
     ORDER BY
@@ -114,7 +106,7 @@ def setdata():
   try:
     if ( getval['oper'] == 'add' ):
       cur.execute("""
-        INSERT INTO """ +table+ """ (""" + ', '.join(rows) + """ )
+        INSERT INTO hell_peopleseach(""" + ', '.join(rows) + """ )
           VALUES ( %(""" + ')s, %('.join(rows) + """)s );
       ;""", getval)
     elif ( getval['oper'] == 'edit' and getval['_key']==key ):
@@ -123,7 +115,7 @@ def setdata():
         setcolumn = setcolumn + name + '=%(' + name + ')s, '
       setcolumn = setcolumn[:-2]
       cur.execute("""
-        UPDATE """ +table+ """
+        UPDATE hell_peopleseach
           SET """ + setcolumn + """
           WHERE id=%(id)s;
       ;""", getval)
@@ -149,7 +141,7 @@ def getpoint():
   cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
   cur.execute("""
     SELECT *
-      FROM """ +table+"""
+      FROM hell_peopleseach
       WHERE
         lat > %(minlat)s
         and lat < %(maxlat)s
