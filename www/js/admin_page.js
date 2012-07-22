@@ -51,9 +51,10 @@ $(function(){
   // цветные маркеры
   hell.map.mcolors = new Array(
   	new MarkerIcon({markerColor:'icon'}),
+  	new MarkerIcon({markerColor:'icon'}),
   	new MarkerIcon({markerColor:'red'}), 
-  	new MarkerIcon({markerColor:'yellow'}), 
-  	new MarkerIcon({markerColor:'green'})
+  	new MarkerIcon({markerColor:'green'}),
+  	new MarkerIcon({markerColor:'yellow'})
   );
 
   if (location.href.search("map.php")>0) {
@@ -128,7 +129,7 @@ hell.inittab = function(){
         {name:'required', index:'required', width:200, editable:true, edittype:'textarea'},
         {name:'info', index:'info', width:200, editable:true, edittype:'textarea'},
         {name:'condition_house', index:'condition_house', width:150, editable:true},
-        {name:'status', index:'status', width:45, editable:true,edittype:'select',formatter:'select',editoptions:{value:"1:Новая;2:В работе;3:Закрыта"}},
+        {name:'status', index:'status', width:45, editable:true,edittype:'select',formatter:'select',editoptions:{value:"1:В работе;2:Cрочная помощь;3:Помощь не требуется"}},
         {name:'done', index:'done', width:200, edittype:'textarea', editable:true},
         {name:'lat', index:'lat', hidden:true, editable:true},
         {name:'lon', index:'lon', hidden:true, editable:true}

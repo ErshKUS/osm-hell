@@ -60,7 +60,7 @@ $(function(){
 });
 
 onresize = function() {
-  $('#tabt').jqGrid('setGridHeight', $(window).height()*0.6-30);
+  $('#tabt').jqGrid('setGridHeight', $(window).height()*0.3-30);
   $('#map').height($(window).height()-$('#tab').height()-3);
   hell.map.invalidateSize();
   $('#tabt').jqGrid('setGridWidth', $(window).width());
@@ -260,8 +260,8 @@ hell.updateMarkers = function() {
     if (check && !(point.check == "True"))
       continue;
     var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
-    //var popupText = $.tmpl(hell.popuptempl, point).html();
-    //marker.bindPopup(popupText);
+    var popupText = $.tmpl(hell.popuptempl, point).html();
+    marker.bindPopup(popupText);
     var icon = hell.map.mcolors[point.status];
     if (icon)
       marker.setIcon(icon);

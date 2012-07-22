@@ -60,7 +60,7 @@ $(function(){
 });
 
 onresize = function() {
-  $('#tabt').jqGrid('setGridHeight', $(window).height()*0.6-30);
+  $('#tabt').jqGrid('setGridHeight', $(window).height()*0.3-30);
   $('#map').height($(window).height()-$('#tab').height()-3);
   hell.map.invalidateSize();
   $('#tabt').jqGrid('setGridWidth', $(window).width());
@@ -130,7 +130,7 @@ hell.inittab = function(){
       ignoreCase: true,
 //      pgbuttons: false,
 //      pginput: false,
-      height: 250,
+      height: 150,
       viewrecords: true,
       shrinkToFit: false,
       modal: false,

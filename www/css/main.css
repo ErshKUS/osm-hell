@@ -59,3 +59,8 @@ td {vertical-align: top;}
 #TblGrid_tabt td.DataTD .FormElement{
   width: 18em;
 }
+
+#headinfo{
+  font-size: 1.5em;
+  margin: 0.2em 1em;
+}

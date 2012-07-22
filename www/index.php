@@ -24,7 +24,7 @@
 </head>
 <body>
   <div style="height:100%;width:100%;">
-    <div>Отчеты об оказанной помощи присылайте редакторам таблицы. Тема письма "КРЫМСК":  potop0607@gmail.com / potop0707@gmail.com</div>
+    <div id="headinfo">Отчеты об оказанной помощи присылайте редакторам таблицы. Тема письма "КРЫМСК":  potop0607@gmail.com / potop0707@gmail.com</div>
 	  <div id="tab">
 	    <table id="tabt"></table>
 	    <div id="tabp"></div>  

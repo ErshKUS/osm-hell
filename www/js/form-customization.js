@@ -230,7 +230,7 @@ OSMHell.prototype.loadBuildingCenter = function(){
 };
 
 OSMHell.prototype.loadBuildingCenterCallback = function(data){
-	var lonLat = $.parseJSON(data);
+	var lonLat = data['data'][0];
 	var bk = this.getSelectedBuildingKey();
 	this.coordsCache[bk] = lonLat;
 	this.centerMapData(this.coordsCache[bk]);
@@ -243,7 +243,7 @@ OSMHell.prototype.getSelectedBuildingKey = function(){
 };
 
 OSMHell.prototype.centerMapData = function(data){
-	var lonlat = data['data'][0];
+	var lonlat = data;
 	if(hell && hell.map){
 		hell.map.setView(new L.LatLng(lonlat.lat, lonlat.lon), 17);
 	}
