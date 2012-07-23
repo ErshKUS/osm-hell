@@ -1,8 +1,46 @@
+$.extend({
+  getUrlVars: function(){
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+      hash = hashes[i].split('=');
+      vars.push(hash[0]);
+      vars[hash[0]] = hash[1];
+    }
+    return vars;
+  },
+  getUrlVar: function(name){
+    return $.getUrlVars()[name];
+  }
+});
+
 $(function(){
+
+  hell.p.key = $.getUrlVar('key') || '';
 
   hell.map = new L.Map('map');
   var mapnik = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: "Map data &copy; <a href='http://osm.org'>OpenStreetMap</a> contributors"});
-  
+
+  var layerdefs = {
+		  gsat: { name: "Google", js: ["http://maps.google.com/maps/api/js?v=3.2&sensor=false&callback=L.Google.asyncInitialize", "js/llplugins/Google.js"],
+			  init: function() {return new L.Google(); }
+		  },
+		  ysat: { name: "Yandex", js: ["http://api-maps.yandex.ru/2.0/?load=package.map&lang=ru-RU", "js/llplugins/Yandex.js"],
+			  init: function() {return new L.Yandex("satellite"); }
+		  },
+		  bing: { name: "Bing", js: ["js/llplugins/Bing.js"],
+			  init: function() {return new L.BingLayer("Anqm0F_JjIZvT0P3abS6KONpaBaKuTnITRrnYuiJCE0WOhH6ZbE4DzeT6brvKVR5");}
+		  }
+  };
+
+  var yandex = new L.DeferredLayer(layerdefs.ysat);
+  var google = new L.DeferredLayer(layerdefs.gsat);
+  var bing = new L.DeferredLayer(layerdefs.bing);
+
+  hell.lswtcher = new L.Control.Layers({'OSM':mapnik, 'Google': google, 'Yandex': yandex, 'Bing': bing});
+  hell.map.addControl(hell.lswtcher);
+
   var krymsk = new L.LatLng(44.9289, 37.9870);
   hell.map.setView(krymsk, 13).addLayer(mapnik);
   hell.map.markergroup = new L.LayerGroup();
@@ -13,7 +51,7 @@ $(function(){
   hell.map.mcolors = new Array(
   	new MarkerIcon({markerColor:'icon'}),
   	new MarkerIcon({markerColor:'icon'}),
-  	new MarkerIcon({markerColor:'red'}), 
+  	new MarkerIcon({markerColor:'red'}),
   	new MarkerIcon({markerColor:'green'}),
   	new MarkerIcon({markerColor:'yellow'})
   );
@@ -25,15 +63,14 @@ $(function(){
 
   window.osmhell = new OSMHell();
   window.osmhell.loadCityes();
-  
+
   hell.inittab();
   $(window).resize(onresize);
   onresize();
-  
 });
 
 onresize = function() {
-  $('#tabt').jqGrid('setGridHeight', $(window).height()*0.6-30);
+  $('#tabt').jqGrid('setGridHeight', $(window).height()*0.5-30);
   $('#map').height($(window).height()-$('#tab').height()-3);
   hell.map.invalidateSize();
   $('#tabt').jqGrid('setGridWidth', $(window).width());
@@ -44,11 +81,10 @@ hell.inittab = function(){
       url: hell.p.urlapi+'/data?action=getdata',
       datatype: "json",
       mtype: "POST",
-      
-      
+
       colNames:['', 'id','Город','Улица','Дом','Квартира','Состав семьи','Контактное лицо','Телефон','Требуется','Доп.информация','Состояние жилья','Статус','Сделано','lat','lon'],
       colModel:[
-        {name:'check', index:'check', width:15, editable:false, search:true, edittype:'checkbox', editoptions:{value:"True:False"}, formatter:"checkbox", formatoptions:{disabled:false}},      
+        {name:'check', index:'check', width:15, editable:false, search:true, edittype:'checkbox', editoptions:{value:"True:False"}, formatter:"checkbox", formatoptions:{disabled:false}},
         {name:'id', index:'id', hidden:true, key:true},
         {name:'city', index:'city', width:70, editable:true},
         {name:'street', index:'street', width:100, editable:true},
@@ -65,56 +101,24 @@ hell.inittab = function(){
         {name:'lat', index:'lat', hidden:true, editable:true},
         {name:'lon', index:'lon', hidden:true, editable:true}
      ],
-      
-/*
-      colNames:['','id','Город','Улица','Дом','Имя человека','Дата рождения','Возраст','Что известно','Подробности о человеке','Источник информации','Кто разыскивает','Способы связи с ищущим','Биографические данные, персональные данные и связи', 'Медицинские сведения', 'Антропометрические сведения', 'Психологические и поведенческие особенности', 'Статус заявки', 'Информация от модераторов списка', 'Информация от волонтеров с места', 'Кто проверял, телефон', 'Дата проверки','Временной шамп','lat','lon'],
-      colModel:[
-        {name:'check', index:'check', width:15, editable:false, search:true, edittype:'checkbox', editoptions:{value:"True:False"}, formatter:"checkbox", formatoptions:{disabled:false}},      
-        {name:'id', index:'id', hidden:true, key:true, hidden: true},
-        {name:'city', index:'city', width:50, editable:true},
-        {name:'street', index:'street', width:70, editable:true},
-        {name:'house', index:'house', width:25, editable:true},
-        {name:'nameperson', index:'nameperson', width:150, editable:true},
-        {name:'dob', index:'dob', width:60, editable:true},
-        {name:'age', index:'age', width:50, editable:true},
-        {name:'status', index:'status', width:70, editable:true},
-        {name:'details', index:'details', width:150, editable:true},
-        {name:'source', index:'source', width:90, editable:true},
-        {name:'sourceperson', index:'sourceperson', width:200, editable:true},
-        {name:'sourcecontact', index:'sourcecontact', width:200, editable:true},
-        {name:'relationship', index:'relationship', width:200, editable:true},
-        {name:'medicalinfo', index:'medicalinfo', width:200, editable:true},
-        {name:'anthropometric', index:'anthropometric', width:200, editable:true},
-        {name:'psychological', index:'psychological', width:200, editable:true},
-        {name:'ticketstatus', index:'ticketstatus', width:70, editable:true},
-        {name:'infomoderators', index:'infomoderators', width:150, editable:true},
-        {name:'infovolunteer', index:'infovolunteer', width:150, editable:true},
-        {name:'namevolunteer', index:'namevolunteer', width:100, editable:true},
-        {name:'datechecking', index:'datechecking', width:55, editable:true},
-        {name:'timestamp', index:'timestamp', hidden:true, width:30, editable:true},
-        {name:'lat', index:'lat', hidden:true, editable:true},
-        {name:'lon', index:'lon', hidden:true, editable:true}
-     ],
-  */    
 
-      rowNum:500,
+      rowNum:5000,
 //      width: 1250,
 //      rowList:[30,70],
       caption:"Таблица данных",
       pager: '#tabp',
       sortname: 'id',
-      viewsortcols: [true],
+      viewsortcols: true,
       ignoreCase: true,
       shrinkToFit: false,
 //      pgbuttons: false,
 //      pginput: false,
       height: 250,
       viewrecords: true,
-      shrinkToFit: false,
       modal: false,
-      loadonce: true,
+      loadonce: hell.p.key=='',
       jsonReader: { repeatitems: false },
-      editurl: hell.p.urlapi+'/data?action=setdata',
+      editurl: hell.p.urlapi+'/data?action=setdata&_key='+hell.p.key,
       sortorder: "desc",
       loadComplete: function(){
         changecheck = function(data){
@@ -123,21 +127,10 @@ hell.inittab = function(){
             {check:data.checked}
           );
           hell.updateMarkers();
-          $('#tabt [aria-describedby=tabt_check]>input').change(function(){
-            changecheck(this);
-          });
+          $('#tabt [aria-describedby=tabt_check]>input').change(function(){changecheck(this)});
         }
-        $('#tabt [aria-describedby=tabt_check]>input').change(function(){
-          changecheck(this);
-        });
-        /*$('#tabt [aria-describedby=tabt_check]>input').change(function(){
-          $("#tabt").jqGrid().setRowData(
-            $(this).closest('tr').attr('id'),
-            {check:this.checked}
-          );
-          hell.updateMarkers();
-        })*/
-      },      
+        $('#tabt [aria-describedby=tabt_check]>input').change(function(){changecheck(this)});
+      },
       beforeSelectRow: function(rowid) {
         var marker = hell.map.allmarkers[$('#tabt').jqGrid('getRowData',rowid).id];
         if (!marker) {
@@ -158,28 +151,33 @@ hell.inittab = function(){
   });
   $("#tabt").jqGrid('filterToolbar',{searchOnEnter:false});
 
+  /*if (hell.p.key=='') {
+    $("#tabt").jqGrid({loadonce: true})
+  }*/
+
+
   $("#tabt")
     .navGrid('#tabp',{edit:false,add:false,del:false,search:false,refresh:false})
   /*  .navButtonAdd('#tabp',{
-      caption:"Распечатать выбранные", 
-      buttonicon:"ui-icon-print", 
+      caption:"Распечатать выбранные",
+      buttonicon:"ui-icon-print",
       onClickButton: function(){
-        
-      }, 
+
+      },
       position:"last"
     })
     .navButtonAdd('#tabp',{
-      caption:"Распечатать выбранные", 
-      buttonicon:"ui-icon-print", 
+      caption:"Распечатать выбранные",
+      buttonicon:"ui-icon-print",
       onClickButton: function(){
-        
-      }, 
+
+      },
       position:"last"
     });*/
-  
+
  // jQuery("#tabt").jqGrid('searchGrid', {multipleSearch:true} );
-  
-/* 
+
+/*
   $("#tabt").jqGrid('navGrid','#tabp',
     {edit:true,add:true,del:false,search:false,refresh:true,view:true},
     { //edit
@@ -204,7 +202,7 @@ hell.inittab = function(){
         return [success,message];
       },
       afterShowForm : function (formid) {
-    	  window.osmhell.connectToForm(formid);        
+    	  window.osmhell.connectToForm(formid);
       }
     },
     { //add
@@ -230,12 +228,12 @@ hell.inittab = function(){
         return [success,message,new_id];
       },
       afterShowForm : function (formid) {
-    	  window.osmhell.connectToForm(formid);        
+    	  window.osmhell.connectToForm(formid);
       }
     }
   );
   */
-  
+
 };
 
 hell.updateMarkers = function() {

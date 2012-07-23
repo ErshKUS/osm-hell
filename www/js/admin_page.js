@@ -21,7 +21,7 @@ $(function(){
 
   hell.map = new L.Map('map');
   var mapnik = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: "Map data &copy; <a href='http://osm.org'>OpenStreetMap</a> contributors"});
-  
+
   var layerdefs = {
 		  gsat: { name: "Google", js: ["http://maps.google.com/maps/api/js?v=3.2&sensor=false&callback=L.Google.asyncInitialize", "js/llplugins/Google.js"],
 			  init: function() {return new L.Google(); }
@@ -37,11 +37,10 @@ $(function(){
   var yandex = new L.DeferredLayer(layerdefs.ysat);
   var google = new L.DeferredLayer(layerdefs.gsat);
   var bing = new L.DeferredLayer(layerdefs.bing);
-  
+
   hell.lswtcher = new L.Control.Layers({'OSM':mapnik, 'Google': google, 'Yandex': yandex, 'Bing': bing});
   hell.map.addControl(hell.lswtcher);
-  
-  
+
   var krymsk = new L.LatLng(44.9289, 37.9870);
   hell.map.setView(krymsk, 13).addLayer(mapnik);
   hell.map.markergroup = new L.LayerGroup();
@@ -52,26 +51,26 @@ $(function(){
   hell.map.mcolors = new Array(
   	new MarkerIcon({markerColor:'icon'}),
   	new MarkerIcon({markerColor:'icon'}),
-  	new MarkerIcon({markerColor:'red'}), 
+  	new MarkerIcon({markerColor:'red'}),
   	new MarkerIcon({markerColor:'green'}),
   	new MarkerIcon({markerColor:'yellow'})
   );
 
   if (location.href.search("map.php")>0) {
-    //updateMarkers(); //load markers from server
+    updateMarkers(); //load markers from server
     return;
   }
 
   window.osmhell = new OSMHell();
   window.osmhell.loadCityes();
-  
+
   hell.inittab();
   $(window).resize(onresize);
   onresize();
 });
 
 onresize = function() {
-  $('#tabt').jqGrid('setGridHeight', $(window).height()*0.4-30);
+  $('#tabt').jqGrid('setGridHeight', $(window).height()*0.5-30);
   $('#map').height($(window).height()-$('#tab').height()-3);
   hell.map.invalidateSize();
   $('#tabt').jqGrid('setGridWidth', $(window).width());
@@ -82,42 +81,10 @@ hell.inittab = function(){
       url: hell.p.urlapi+'/data?action=getdata',
       datatype: "json",
       mtype: "POST",
-      
-      
-      
-/*
-      colNames:['id','Временной шамп','Город','Улица','Дом','Имя человека','Дата рождения','Возраст','Что известно','Подробности о человеке','Источник информации','Кто разыскивает','Способы связи с ищущим','Биографические данные, персональные данные и связи', 'Медицинские сведения', 'Антропометрические сведения', 'Психологические и поведенческие особенности', 'Статус заявки', 'Информация от модераторов списка', 'Информация от волонтеров с места', 'Кто проверял, телефон', 'Дата проверки','lat','lon'],
-      colModel:[
-        {name:'id', index:'id', hidden:true, key:true, hidden: true},
-        {name:'timestamp', index:'timestamp', width:30, editable:true, hidden: true},
-        {name:'city', index:'city', width:25, editable:true},
-        {name:'street', index:'street', width:50, editable:true},
-        {name:'house', index:'house', width:15, editable:true},
-        {name:'nameperson', index:'nameperson', width:60, editable:true},
-        {name:'dob', index:'dob', width:40, editable:true},
-        {name:'age', index:'age', width:55, editable:true},
-        {name:'status', index:'status', width:55, editable:true},
-        {name:'details', index:'details', width:55, editable:true},
-        {name:'source', index:'source', width:55, editable:true},
-        {name:'sourceperson', index:'sourceperson', width:55, editable:true, hidden: true},
-        {name:'sourcecontact', index:'sourcecontact', width:55, editable:true, hidden: true}, // 'Способы связи с ищущим'
-        {name:'relationship', index:'relationship', width:55, editable:true, hidden: true}, // 'Биографические данные, персональные данные и связи'
-        {name:'medicalinfo', index:'medicalinfo', width:55, editable:true, hidden: true}, // 'Медицинские сведения'
-        {name:'anthropometric', index:'anthropometric', width:55, editable:true, hidden: true}, // 'Антропометрические сведения'
-        {name:'psychological', index:'psychological', width:55, editable:true, hidden: true}, // 'Психологические и поведенческие особенности'
-        {name:'ticketstatus', index:'ticketstatus', width:55, editable:true},
-        {name:'infomoderators', index:'infomoderators', width:55, editable:true},
-        {name:'infovolunteer', index:'infovolunteer', width:55, editable:true},
-        {name:'namevolunteer', index:'namevolunteer', width:55, editable:true},
-        {name:'datechecking', index:'datechecking', width:55, editable:true},
-        {name:'lat', index:'lat', hidden:true, editable:true, hidden: true, hidden: true},
-        {name:'lon', index:'lon', hidden:true, editable:true, hidden: true, hidden: true}
-     ],
-*/      
-          //  rows=['lat', 'lon', 'city', 'street', 'house', 'flat', 'contact', 'phone', 'required', 'info', 'condition_house', 'status', 'done']
 
-      colNames:['id','Город','Улица','Дом','Квартира','Состав семьи','Контактное лицо','Телефон','Требуется','Доп.информация','Состояние жилья','Статус','Сделано','Старый адрес','lat','lon'],
+      colNames:['', 'id','Город','Улица','Дом','Квартира','Состав семьи','Контактное лицо','Телефон','Требуется','Доп.информация','Состояние жилья','Статус','Сделано','lat','lon'],
       colModel:[
+        {name:'check', index:'check', width:15, editable:false, search:true, edittype:'checkbox', editoptions:{value:"True:False"}, formatter:"checkbox", formatoptions:{disabled:false}},
         {name:'id', index:'id', hidden:true, key:true},
         {name:'city', index:'city', width:70, editable:true},
         {name:'street', index:'street', width:100, editable:true},
@@ -131,12 +98,11 @@ hell.inittab = function(){
         {name:'condition_house', index:'condition_house', width:150, editable:true},
         {name:'status', index:'status', width:45, editable:true,edittype:'select',formatter:'select',editoptions:{value:"1:В работе;2:Cрочная помощь;3:Помощь не требуется"}},
         {name:'done', index:'done', width:200, edittype:'textarea', editable:true},
-        {name:'old_address', index:'old_address', width:150, editable:true},
         {name:'lat', index:'lat', hidden:true, editable:true},
         {name:'lon', index:'lon', hidden:true, editable:true}
      ],
-     
-      rowNum:50000,
+
+      rowNum:5000,
 //      width: 1250,
 //      rowList:[30,70],
       caption:"Таблица данных",
@@ -153,6 +119,17 @@ hell.inittab = function(){
       jsonReader: { repeatitems: false },
       editurl: hell.p.urlapi+'/data?action=setdata&_key='+hell.p.key,
       sortorder: "desc",
+      loadComplete: function(){
+        changecheck = function(data){
+          $("#tabt").jqGrid().setRowData(
+            $(data).closest('tr').attr('id'),
+            {check:data.checked}
+          );
+          hell.updateMarkers();
+          $('#tabt [aria-describedby=tabt_check]>input').change(function(){changecheck(this)});
+        }
+        $('#tabt [aria-describedby=tabt_check]>input').change(function(){changecheck(this)});
+      },
       beforeSelectRow: function(rowid) {
         var marker = hell.map.allmarkers[$('#tabt').jqGrid('getRowData',rowid).id];
         if (!marker) {
@@ -192,7 +169,7 @@ hell.inittab = function(){
       }
   });
   $("#tabt").jqGrid('filterToolbar',{searchOnEnter:false});
-  
+
   $("#tabt").jqGrid('navGrid','#tabp',
     {edit:true,add:true,del:false,search:false,refresh:true,view:true},
     { //edit
@@ -220,7 +197,7 @@ hell.inittab = function(){
         $('div.ui-widget-overlay').zIndex('99');
     	  window.osmhell.hideOverlay();
     	  window.osmhell.attachMap(hell.map);
-    	  window.osmhell.connectToForm(formid);        
+    	  window.osmhell.connectToForm(formid);
       },
       onClose : function(){
     	  window.osmhell.formActive = false;
@@ -253,7 +230,7 @@ hell.inittab = function(){
         $('div.ui-widget-overlay').zIndex('99');
     	  window.osmhell.hideOverlay();
     	  window.osmhell.attachMap(hell.map);
-    	  window.osmhell.connectToForm(formid);        
+    	  window.osmhell.connectToForm(formid);
       },
       onClose : function(){
     	  window.osmhell.formActive = false;
@@ -261,21 +238,21 @@ hell.inittab = function(){
       }
     }
   );
-  
+
 /*  $("#tabt")
     .navButtonAdd('#tabp',{
-      caption:"Распечатать выбранные", 
-      buttonicon:"ui-icon-print", 
+      caption:"Распечатать выбранные",
+      buttonicon:"ui-icon-print",
       onClickButton: function(){
         a=1;
         this.p.postData.filters='{"groupOp":"AND","rules":[{"field":"ticketstatus","op":"bn","data":"закрыта"}]}';
         this.p.postData._search=true;
         $(this).trigger("reloadGrid",[{page:1}]);
-      }, 
+      },
       position:"last"
     })*/
-  
-  
+
+
 };
 
 updateMarkers = function() {
