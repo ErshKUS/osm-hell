@@ -126,9 +126,9 @@ hell.inittab = function(){
             {check:data.checked}
           );
           hell.updateMarkers();
-          $('#tabt [aria-describedby=tabt_check]>input').change(function(){changecheck(this)});
-        }
-        $('#tabt [aria-describedby=tabt_check]>input').change(function(){changecheck(this)});
+          $('#tabt [aria-describedby=tabt_check]>input').change(function(){changecheck(this);});
+        };
+        $('#tabt [aria-describedby=tabt_check]>input').change(function(){changecheck(this);});
       },
       beforeSelectRow: function(rowid) {
         var marker = hell.map.allmarkers[$('#tabt').jqGrid('getRowData',rowid).id];

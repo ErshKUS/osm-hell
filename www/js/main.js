@@ -127,9 +127,9 @@ hell.inittab = function(){
             {check:data.checked}
           );
           hell.updateMarkers();
-          $('#tabt [aria-describedby=tabt_check]>input').change(function(){changecheck(this)});
-        }
-        $('#tabt [aria-describedby=tabt_check]>input').change(function(){changecheck(this)});
+          $('#tabt [aria-describedby=tabt_check]>input').change(function(){changecheck(this);});
+        };
+        $('#tabt [aria-describedby=tabt_check]>input').change(function(){changecheck(this);});
       },
       beforeSelectRow: function(rowid) {
         var marker = hell.map.allmarkers[$('#tabt').jqGrid('getRowData',rowid).id];
@@ -157,7 +157,7 @@ hell.inittab = function(){
 
 
   $("#tabt")
-    .navGrid('#tabp',{edit:false,add:false,del:false,search:false,refresh:false})
+    .navGrid('#tabp',{edit:false,add:false,del:false,search:false,refresh:false});
   /*  .navButtonAdd('#tabp',{
       caption:"Распечатать выбранные",
       buttonicon:"ui-icon-print",
@@ -263,7 +263,7 @@ hell.updateMarkers = function() {
     hell.map.allmarkers[point.id] = marker;
     marker._json = point;
   }
-}
+};
 
 /*
 updateMarkers = function() {
