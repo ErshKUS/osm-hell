@@ -116,7 +116,7 @@ hell.inittab = function(){
 */      
           //  rows=['lat', 'lon', 'city', 'street', 'house', 'flat', 'contact', 'phone', 'required', 'info', 'condition_house', 'status', 'done']
 
-      colNames:['id','Город','Улица','Дом','Квартира','Состав семьи','Контактное лицо','Телефон','Требуется','Доп.информация','Состояние жилья','Статус','Сделано','lat','lon'],
+      colNames:['id','Город','Улица','Дом','Квартира','Состав семьи','Контактное лицо','Телефон','Требуется','Доп.информация','Состояние жилья','Статус','Сделано','Старый адрес','lat','lon'],
       colModel:[
         {name:'id', index:'id', hidden:true, key:true},
         {name:'city', index:'city', width:70, editable:true},
@@ -131,6 +131,7 @@ hell.inittab = function(){
         {name:'condition_house', index:'condition_house', width:150, editable:true},
         {name:'status', index:'status', width:45, editable:true,edittype:'select',formatter:'select',editoptions:{value:"1:В работе;2:Cрочная помощь;3:Помощь не требуется"}},
         {name:'done', index:'done', width:200, edittype:'textarea', editable:true},
+        {name:'old_address', index:'old_address', width:150, editable:true},
         {name:'lat', index:'lat', hidden:true, editable:true},
         {name:'lon', index:'lon', hidden:true, editable:true}
      ],

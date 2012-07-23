@@ -13,7 +13,7 @@ import db_config
 #rowsFloat=['lat','lon']
 
 table='hell_addressaffected'
-rows=['lat', 'lon', 'city', 'street', 'house', 'flat', 'contact', 'phone', 'required', 'info', 'condition_house', 'status', 'done', 'compositionfamily']
+rows=['lat', 'lon', 'city', 'street', 'house', 'flat', 'contact', 'phone', 'required', 'info', 'condition_house', 'status', 'done', 'compositionfamily', 'old_address']
 rowsInt=['id', 'status']
 rowsFloat=['lat','lon']
 rowsKey=['id']

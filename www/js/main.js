@@ -117,13 +117,26 @@ hell.inittab = function(){
       editurl: hell.p.urlapi+'/data?action=setdata',
       sortorder: "desc",
       loadComplete: function(){
+        changecheck = function(data){
+          $("#tabt").jqGrid().setRowData(
+            $(data).closest('tr').attr('id'),
+            {check:data.checked}
+          );
+          hell.updateMarkers();
+          $('#tabt [aria-describedby=tabt_check]>input').change(function(){
+            changecheck(this);
+          });
+        }
         $('#tabt [aria-describedby=tabt_check]>input').change(function(){
+          changecheck(this);
+        });
+        /*$('#tabt [aria-describedby=tabt_check]>input').change(function(){
           $("#tabt").jqGrid().setRowData(
             $(this).closest('tr').attr('id'),
             {check:this.checked}
           );
           hell.updateMarkers();
-        })
+        })*/
       },      
       beforeSelectRow: function(rowid) {
         var marker = hell.map.allmarkers[$('#tabt').jqGrid('getRowData',rowid).id];
@@ -229,7 +242,12 @@ hell.updateMarkers = function() {
   var data = $('#tabt').getRowData();
   var check = false;
   hell.map.markergroup.clearLayers();
-  for(var i=0;i<data.length;i++) {if (data[i].check == "True") check=true}
+  for(var i=0;i<data.length;i++) {
+    if (data[i].check == "True") {
+      check=true;
+      break;
+    }
+  }
   for(var i=0;i<data.length;i++) {
     // каждую точку сложить в одно сообщение
     var point = data[i];
@@ -239,7 +257,7 @@ hell.updateMarkers = function() {
       continue;
     var marker = new L.Marker(new L.LatLng(point.lat, point.lon));
     var popupText = $.tmpl(hell.popuptempl, point).html();
-    marker.bindPopup(popupText);
+    marker.bindPopup(popupText,{autoPan: false});
     var icon = hell.map.mcolors[point.status];
     if (icon)
       marker.setIcon(icon);
