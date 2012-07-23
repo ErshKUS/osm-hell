@@ -201,6 +201,7 @@ hell.inittab = function(){
       },
       onClose : function(){
     	  window.osmhell.formActive = false;
+    	  window.osmhell.reset();
     	  return true;
       }
     },
@@ -234,6 +235,7 @@ hell.inittab = function(){
       },
       onClose : function(){
     	  window.osmhell.formActive = false;
+    	  window.osmhell.reset();
     	  return true;
       }
     }

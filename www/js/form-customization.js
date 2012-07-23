@@ -410,6 +410,12 @@ OSMHell.prototype.mapClick = function(e){
 	}
 };
 
+OSMHell.prototype.reset = function(){
+	this.selectedBuilding = null;
+	this.selectedStreet = null;
+	this.selectedCity = null;
+};
+
 function loadData(params, context, cb){
 //	$.ajax(OSMHell.API_URL, {
 //		data: params,
