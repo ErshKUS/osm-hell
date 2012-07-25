@@ -27,7 +27,11 @@
 </head>
 <body>
   <div style="height:100%;width:100%;">
+    <? if ($_REQUEST[key]=='') { ?>
     <div id="headinfo">Отчеты об оказанной помощи присылайте редакторам таблицы. Тема письма "КРЫМСК":  potop0607@gmail.com / potop0707@gmail.com</div>
+    <? } else { ?>
+    <div id="headinfo"></div>
+    <? } ?>
 	  <div id="tab">
 	    <table id="tabt"></table>
 	    <div id="tabp"></div>

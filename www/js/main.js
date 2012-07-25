@@ -151,89 +151,94 @@ hell.inittab = function(){
   });
   $("#tabt").jqGrid('filterToolbar',{searchOnEnter:false});
 
-  /*if (hell.p.key=='') {
-    $("#tabt").jqGrid({loadonce: true})
-  }*/
-
-
+  /*
   $("#tabt")
-    .navGrid('#tabp',{edit:false,add:false,del:false,search:false,refresh:false});
-  /*  .navButtonAdd('#tabp',{
-      caption:"Распечатать выбранные",
-      buttonicon:"ui-icon-print",
-      onClickButton: function(){
-
-      },
-      position:"last"
-    })
     .navButtonAdd('#tabp',{
       caption:"Распечатать выбранные",
       buttonicon:"ui-icon-print",
       onClickButton: function(){
-
+        alert('no print');
       },
       position:"last"
-    });*/
-
+    });
+  */
  // jQuery("#tabt").jqGrid('searchGrid', {multipleSearch:true} );
 
-/*
-  $("#tabt").jqGrid('navGrid','#tabp',
-    {edit:true,add:true,del:false,search:false,refresh:true,view:true},
-    { //edit
-      closeAfterEdit: true,
-      width :  500,
-      afterSubmit: function (response, postdata) {
-        var success = true;
-        var message = "";
-        var json = jQuery.parseJSON(response.responseText);
-        if(json.errors) {
-          success = false;
-          for(i=0; i < json.errors.length; i++) {
-            message += json.errors[i] + '<br/>';
+  if (hell.p.key=='') {
+    $("#tabt").jqGrid('navGrid','#tabp',{edit:false,add:false,del:false,search:false,refresh:false})
+  }
+  else {
+    $("#tabt").jqGrid('navGrid','#tabp',
+      {edit:true,add:true,del:false,search:false,refresh:true,view:true},
+      { //edit
+        closeAfterEdit: true,
+        width :  500,
+        afterSubmit: function (response, postdata) {
+          var success = true;
+          var message = "";
+          var json = jQuery.parseJSON(response.responseText);
+          if(json.errors) {
+            success = false;
+            for(i=0; i < json.errors.length; i++) {
+              message += json.errors[i] + '<br/>';
+            }
           }
-        }
-        if(json.error) {
-          success = false;
-          message +=json.error;
-        }
-        $(this).jqGrid('setGridParam', {datatype:'json'});
-        updateMarkers();
-        return [success,message];
-      },
-      afterShowForm : function (formid) {
-    	  window.osmhell.connectToForm(formid);
-      }
-    },
-    { //add
-      closeAfterAdd : true,
-      width :  400,
-      afterSubmit: function (response, postdata) {
-        var success = true;
-        var message = "";
-        var json = jQuery.parseJSON(response.responseText);
-        if(json.errors) {
-          success = false;
-          for(i=0; i < json.errors.length; i++) {
-            message += json.errors[i] + '<br/>';
+          if(json.error) {
+            success = false;
+            message +=json.error;
           }
+          $(this).jqGrid('setGridParam', {datatype:'json'});
+          //updateMarkers();
+          return [success,message];
+        },
+        afterShowForm : function (formid) {
+          $('div.ui-widget-overlay').zIndex('99');
+          window.osmhell.hideOverlay();
+          window.osmhell.attachMap(hell.map);
+          window.osmhell.connectToForm(formid);
+        },
+        onClose : function(){
+          window.osmhell.formActive = false;
+          window.osmhell.reset();
+          return true;
         }
-        if(json.error) {
-          success = false;
-          message +=json.error;
-        }
-        var new_id = "1";
-        $(this).jqGrid('setGridParam', {datatype:'json'});
-        updateMarkers();
-        return [success,message,new_id];
       },
-      afterShowForm : function (formid) {
-    	  window.osmhell.connectToForm(formid);
+      { //add
+        closeAfterAdd : true,
+        width :  500,
+        afterSubmit: function (response, postdata) {
+          var success = true;
+          var message = "";
+          var json = jQuery.parseJSON(response.responseText);
+          if(json.errors) {
+            success = false;
+            for(i=0; i < json.errors.length; i++) {
+              message += json.errors[i] + '<br/>';
+            }
+          }
+          if(json.error) {
+            success = false;
+            message +=json.error;
+          }
+          var new_id = "1";
+          $(this).jqGrid('setGridParam', {datatype:'json'});
+          //updateMarkers();
+          return [success,message,new_id];
+        },
+        afterShowForm : function (formid) {
+          $('div.ui-widget-overlay').zIndex('99');
+          window.osmhell.hideOverlay();
+          window.osmhell.attachMap(hell.map);
+          window.osmhell.connectToForm(formid);
+        },
+        onClose : function(){
+          window.osmhell.formActive = false;
+          window.osmhell.reset();
+          return true;
+        }
       }
-    }
-  );
-  */
-
+    );
+  }
 };
 
 hell.updateMarkers = function() {
@@ -303,7 +308,7 @@ updateMarkers = function() {
   }).fail(function (jqXHR, textStatus) {
     alert("Произошла ошибка при чтении карты");
   });
-  setTimeout(updateMarkers, 300000);// reload every 5 minutes
+  //setTimeout(updateMarkers, 300000);// reload every 5 minutes
 };*/
 
 MarkerIcon = L.Icon.Default.extend({
